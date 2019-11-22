@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,9 +17,7 @@ public class Speciality {
     private Integer id;
     private String name;
     private Integer studentsNumber;
-    private String activity;
-    private String background;
-    private String employments;
+    private String description;
     private LocalDate examsStart;
     private LocalDate examsEnd;
     private List<Course> requiredCourses;
@@ -28,9 +27,7 @@ public class Speciality {
         setId(builder.id);
         setName(builder.name);
         setStudentsNumber(builder.studentsNumber);
-        setActivity(builder.activity);
-        setBackground(builder.background);
-        setEmployments(builder.employments);
+        setDescription(builder.description);
         setExamsStart(builder.examsStart);
         setExamsEnd(builder.examsEnd);
         setRequiredCourses(builder.requiredCourses);
@@ -41,14 +38,11 @@ public class Speciality {
         return new Builder();
     }
 
-
     public static final class Builder {
         private Integer id;
         private String name;
         private Integer studentsNumber;
-        private String activity;
-        private String background;
-        private String employments;
+        private String description;
         private LocalDate examsStart;
         private LocalDate examsEnd;
         private List<Course> requiredCourses;
@@ -72,18 +66,8 @@ public class Speciality {
             return this;
         }
 
-        public Builder withActivity(String val) {
-            activity = val;
-            return this;
-        }
-
-        public Builder withBackground(String val) {
-            background = val;
-            return this;
-        }
-
-        public Builder withEmployments(String val) {
-            employments = val;
+        public Builder withDescription(String val) {
+            description = val;
             return this;
         }
 
@@ -110,5 +94,19 @@ public class Speciality {
         public Speciality build() {
             return new Speciality(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Speciality{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", studentsNumber=" + studentsNumber +
+                ", description='" + description + '\'' +
+                ", examsStart=" + examsStart +
+                ", examsEnd=" + examsEnd +
+                ", requiredCourses=" + requiredCourses +
+                ", userResult=" + userResult +
+                '}';
     }
 }

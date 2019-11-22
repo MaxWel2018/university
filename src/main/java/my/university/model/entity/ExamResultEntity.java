@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class ExamResultEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_result_id")
     private Integer id;
 
@@ -30,6 +31,27 @@ public class ExamResultEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private UserEntity user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ExamResultEntity)) {
+            return false;
+        }
+        ExamResultEntity that = (ExamResultEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(grade, that.grade) &&
+                Objects.equals(course, that.course) &&
+                Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, grade, course, user);
+    }
 
     private ExamResultEntity(Builder builder) {
         setId(builder.id);

@@ -13,14 +13,14 @@ import java.util.List;
 public class CourseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Integer id;
     @Column(name = "course_name", nullable = false)
     private String courseName;
     @OneToOne(mappedBy = "course")
     private ExamResultEntity examResult;
-    @ManyToMany(mappedBy = "requiredCourses")
+    @ManyToMany(mappedBy = "requiredCourses",fetch = FetchType.EAGER)
     private List<SpecialityEntity> specialities;
 
     public CourseEntity(String courseName) {

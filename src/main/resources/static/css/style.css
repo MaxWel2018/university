@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+!important;
+    color: white;
+}
+
+a:hover {
+    text-decoration: none;
+!important;
+}
+
+.hidden {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+
+}
+
+.flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 9px;
+}
+
+#background, #activity, #employments {
+    padding-left: 40px;
+}
+
+.speciality-courses {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 231px;
+    right: 200px;
+    border-radius: 23px;
+    background: #00000047;
+    padding: 20px;
+    color: rgb(0, 123, 255);
+    font-size: 18px;
+    width: 400px;
+    font-weight: bold;
+}
+
+.speciality-courses-label {
+
+    position: absolute;
+    top: 249px;
+    right: 200px;
+    border-radius: 23px;
+    padding: 20px;
+    color: #ec0000;
+    font-size: 24px;
+    width: 400px;
+    font-weight: bold;
+    z-index: 99;
+}
+
+.spec-item > label {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.content {
+    min-height: 800px;
+}
+
+.flex-header > a {
+    color: white;
+}
+
+.flex-header > a:hover {
+    border-bottom: 1px solid #58c5f0;
+    text-decoration: none;
+!important;
+    color: #004eff;
+!important;
+}
+
+.menu-element-select {
+    border-bottom: 1px solid #58c5f0;
+}
+header {
+    background: rgb(54, 66, 121);
+}
+html {
+    background: #0c5460;
+    width: 1200px;
+    margin: 0 auto;
+
+}
+
+
+
+body {
+    background-color: #e3ecf5;
+}
+
+.flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100VH;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.content > .regist-form > .form-group {
+    width: 250px;
+}
+
+html {
+    background: #0c5460;
+    width: 1200px;
+    margin: 0 auto;
+
+}
+
+.btn-primary {
+    background-color: #0c5460;
+    border-color: #0c5460;
+!important;
+
+}
+
+
+footer {
+    text-align: center;
+    height: 50px;
+}
+
+/*
+ERRORS_STYLE
+*/
+.error404 {
+    font-size: 120px;
+    position: absolute;
+    top: 300px;
+    width: 1000px;
+    color: #364279;
+
+}
+
+.information > p > span {
+    color: white;
+
+}
+
+.img404 {
+    background: url("/4.png");
+    width: 300px;
+    position: absolute;
+    height: 300px;
+    background-size: cover;
+    top: 230px;
+    left: 700px;
+}
+
+.error404 > span {
+    font-size: 50px;
+    color: #364279;
+    position: absolute;
+    left: 100px;
+
+
+}

@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <title>Home</title>
+    <div th:replace="fragments/header :: header-style"></div>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <style>
+
+    </style>
+
+</head>
+<body>
+<div class="flex-wrapper">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="content">
+
+        <form style="width: 100%;" method="get" th:action="@{/home}">
+            <select name="specialityOption" class="selectpicker form-control" data-style="btn-primary"
+                    title="Choose one of the following..."
+                    style="width: 30%; margin: 20px auto;" onchange="submit()">
+                <option th:each="spec:${specialities}" th:selected="${specSelectedId==spec.id}"
+                        th:text="${spec.name}" th:value="${spec.id}">
+                </option>
+            </select>
+        </form>
+        <div style="color: #0b2e13">
+            <p style="
+    font-size: 24px;
+    color: black;
+" th:text="#{home.content.courses}"></p>
+            <p style="
+    color: #bf0000bf;
+    font-size: 18px;
+    padding-left: 20px;
+" th:each="course:${specSelected.getRequiredCourses()}" th:text="${course.courseName}"></p>
+            <p style="
+    font-size: 24px;
+    color: black;
+" th:text="#{home.content.date.exam}"></p>
+            <div style="
+            display: flex;
+    color: #bf0000bf;
+    font-size: 18px;
+    padding-left: 20px;">
+                <p th:text="${specSelected.examsStart} " >
+                </p>  <span style="padding: 0 10px;">-</span> <p  th:text=" ${specSelected.examsEnd} ">
+            </p>
+            </div>
+             <p style="
+    font-size: 24px;
+    color: black;
+" th:text="#{home.content.description}"></p>
+            <p  th:text="${specSelected.description}"></p>
+        </div>
+
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+</body>
+</html>

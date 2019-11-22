@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 public class Course {
 
-
     private Integer id;
 
     @NotNull

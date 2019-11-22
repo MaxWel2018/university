@@ -1,12 +1,13 @@
 package my.university.model.service.impl;
 
 import lombok.NoArgsConstructor;
-import my.university.exception.AuthorisationFailException;
-import my.university.exception.EntityAlreadyExistException;
-import my.university.exception.EntityNotFoundException;
-import my.university.mapper.UserMapper;
 import my.university.model.domain.User;
 import my.university.model.entity.Role;
+import my.university.model.exception.AuthorisationFailException;
+import my.university.model.exception.EntityAlreadyExistException;
+import my.university.model.exception.EntityNotFoundException;
+import my.university.model.mapper.UserMapper;
+import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
 import my.university.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
+    private RoleRepository roleRepository;
+
     private BCryptPasswordEncoder passwordEncoder;
 
     private UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
@@ -41,7 +45,13 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistException("A user with this Email is already registered");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(new Role("USER"));
+        Role role = roleRepository.findByRole("USER");
+        if (role != null) {
+            user.setRole(role);
+        }else{
+            user.setRole(new Role("USER"));
+        }
+
         userRepository.save(userMapper.mapDomainToEntity(user));
 
         return null;
@@ -74,8 +84,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        findByEmail(user.getEmail());
-        userRepository.save(userMapper.mapDomainToEntity(user));
+        findById(user.getId());
+        registration(user);
     }
 
     @Override

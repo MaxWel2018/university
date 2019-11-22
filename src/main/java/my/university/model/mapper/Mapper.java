@@ -1,4 +1,4 @@
-package my.university.mapper;
+package my.university.model.mapper;
 
 public interface Mapper<DOMAIN, ENTITY> {
     DOMAIN mapEntityToDomain(ENTITY entity);

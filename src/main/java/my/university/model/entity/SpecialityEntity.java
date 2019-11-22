@@ -14,7 +14,7 @@ import java.util.List;
 public class SpecialityEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "speciality_id")
     private Integer id;
 
@@ -24,14 +24,8 @@ public class SpecialityEntity {
     @Column(name = "students_number")
     private Integer studentsNumber;
 
-    @Column(name = "activity")
-    private String activity;
-
-    @Column(name = "background")
-    private String background;
-
-    @Column(name = "employments")
-    private String employments;
+    @Column(name = "description",length = 3000)
+    private String description;
 
     @Column(name = "exams_start")
     private LocalDate examsStart;
@@ -39,7 +33,7 @@ public class SpecialityEntity {
     @Column(name = "exam_end")
     private LocalDate examsEnd;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "speciality_courses",
             joinColumns = @JoinColumn(name = "id_speciality"),
@@ -54,9 +48,7 @@ public class SpecialityEntity {
         setId(builder.id);
         setName(builder.name);
         setStudentsNumber(builder.studentsNumber);
-        setActivity(builder.activity);
-        setBackground(builder.background);
-        setEmployments(builder.employments);
+        setDescription(builder.description);
         setExamsStart(builder.examsStart);
         setExamsEnd(builder.examsEnd);
         setRequiredCourses(builder.requiredCourses);
@@ -72,9 +64,7 @@ public class SpecialityEntity {
         private Integer id;
         private String name;
         private Integer studentsNumber;
-        private String activity;
-        private String background;
-        private String employments;
+        private String description;
         private LocalDate examsStart;
         private LocalDate examsEnd;
         private List<CourseEntity> requiredCourses;
@@ -98,18 +88,8 @@ public class SpecialityEntity {
             return this;
         }
 
-        public Builder withActivity(String val) {
-            activity = val;
-            return this;
-        }
-
-        public Builder withBackground(String val) {
-            background = val;
-            return this;
-        }
-
-        public Builder withEmployments(String val) {
-            employments = val;
+        public Builder withDescription(String val) {
+            description = val;
             return this;
         }
 
@@ -137,4 +117,19 @@ public class SpecialityEntity {
             return new SpecialityEntity(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "SpecialityEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", studentsNumber=" + studentsNumber +
+                ", description='" + description + '\'' +
+                ", examsStart=" + examsStart +
+                ", examsEnd=" + examsEnd +
+                ", requiredCourses=" + requiredCourses +
+                ", userResultEntities=" + userResultEntities +
+                '}';
+    }
+    //TODO Защита от зацикливания MapStruct
 }

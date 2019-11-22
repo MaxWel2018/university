@@ -1,4 +1,4 @@
-package my.university.exception;
+package my.university.model.exception;
 
 public class EntityAlreadyExistException extends RuntimeException {
 
