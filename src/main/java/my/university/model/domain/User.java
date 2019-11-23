@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import my.university.model.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -17,24 +18,21 @@ import java.util.Set;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class User {
 
-    List<ExamResult> examResults;
     private Integer id;
-    @Email(message = "*Please provide a valid Email")
-    @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}")
-    @NotEmpty(message = "Please provide an email")
+    @Value("${spring.queries.roles-query}")
+    private String string;
+    @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}" , message = "enter the email in the specified format : name@domain.com")
     private String email;
-    @NotEmpty(message = "Please provide a password")
-    @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}")
+    @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}", message = "Password inCorrect")
     private String password;
-    @NotEmpty(message = "Please provide your name")
-    @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}")
+    @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}", message = "Last name inCorrect")
     private String firstName;
-    @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}")
-    @NotEmpty(message = "Please provide your surname")
+    @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}", message = "Last name inCorrect")
     private String lastName;
     private Speciality speciality;
     private Integer active;
     private Set<Role> roles;
+    List<ExamResult> examResults;
 
     private User(Builder builder) {
         setExamResults(builder.examResults);
@@ -52,8 +50,8 @@ public class User {
         return new Builder();
     }
 
-
     public static final class Builder {
+
         private List<ExamResult> examResults;
         private Integer id;
         private @Email(message = "*Please provide a valid Email") @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}") @NotEmpty(message = "Please provide an email") String email;

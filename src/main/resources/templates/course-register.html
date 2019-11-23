@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <title>Course</title>
+    <div th:replace="fragments/header :: header-style"></div>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="flex-wrapper">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="content">
+
+
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+
+</body>
+</html>

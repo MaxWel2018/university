@@ -15,6 +15,8 @@
             !important;
 
             }
+
+
         </style>
     </head>
 
@@ -30,7 +32,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav" style="width: 100%;">
                 <li class="nav-item active">
-                    <a class="nav-link" type=""  th:text="#{home.header.home}" href="/user/home"></a>
+                    <a class="nav-link" type=""  th:text="#{home.header.home}" href="/home"></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:text="#{home.header.profile}" href="/user/profile"></a>
@@ -55,7 +57,7 @@
                 <li  class="nav-item" style="margin-left: 40%;display: flex;justify-content: space-around;width: 318px;">
                     <div style="display:flex;width: 54%;justify-content: space-around;">
                         <form sec:authorize="isAnonymous()" th:action="@{/login}" method="get">
-                            <input type="submit" class=" btn btn-primary" th:value="#{menu.button.signIn}"/>
+                            <input type="submit" class=" btn btn-outline-primary" th:value="#{menu.button.signIn}"/>
                         </form>
                         <form sec:authorize="isAnonymous()"  th:action="@{/register}" method="get">
                             <input type="submit" class=" btn btn-primary" th:value="#{menu.button.registration}"/>

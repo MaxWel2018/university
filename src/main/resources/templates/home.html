@@ -52,13 +52,14 @@
 " th:text="#{home.content.description}"></p>
             <p  th:text="${specSelected.description}"></p>
         </div>
-
+        <form th:action="@{/home/course-register}">
+            <input type="submit" class=" btn btn-primary" th:value="#{reg.regestration}"/>
+        </form>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
 
-<p th:text="${user}"></p>
 
 </body>
 </html>

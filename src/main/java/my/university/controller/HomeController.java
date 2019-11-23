@@ -27,8 +27,7 @@ public class HomeController {
         this.userService = userService;
     }
 
-
-    @RequestMapping(value = {"/", "home"},method = RequestMethod.GET)
+    @GetMapping(value = {"/", "home"})
     public String getMessage(Model model, @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_SPECIALITY) Integer specialityOption) {
         List<Speciality> all = specialityService.findAll();
         model.addAttribute("specialities", all);
@@ -37,8 +36,7 @@ public class HomeController {
         return "home";
     }
 
-
-    @RequestMapping(value = {"/error"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/error"})
     public String error() {
         return "/error/error404";
     }
@@ -48,7 +46,12 @@ public class HomeController {
         return "login";
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/course-register"})
+    public String getCourseRegisterForm(@ModelAttribute(name = "loginForm") LoginForm loginForm) {
+        return "course-register";
+    }
+
+    @GetMapping(value = {"/register"})
     public String getSingUpForm(@ModelAttribute(name = "user") User user) {
         return "sing-up";
     }
@@ -69,7 +72,6 @@ public class HomeController {
 
     @PostMapping(value = {"/login"})
     public String login(Model model, @Valid LoginForm loginForm, BindingResult bindingResult) {
-        System.out.println("Working controller /login  Post");
         if (bindingResult.hasErrors()) {
             return "login";
         }
