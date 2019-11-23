@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,15 +45,12 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findByRole("USER");
-        if (role != null) {
-            user.setRole(role);
-        }else{
-            user.setRole(new Role("USER"));
-        }
+        user.setActive(1);
 
+        user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
         userRepository.save(userMapper.mapDomainToEntity(user));
 
-        return null;
+        return user;
     }
 
     @Override

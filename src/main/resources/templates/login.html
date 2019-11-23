@@ -17,18 +17,14 @@
         <div style="width:600px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-user"></i> Please Login
+                    <i th:text="#{menu.button.signIn}" class="fa fa-user"></i>
                 </div>
                 <div class="card-block" style="padding: 24px;">
-                    <form name="f" th:action="@{/login}" th:object="${user}" method="post">
+                    <form name="f" th:action="@{/login}" th:object="${loginForm}" method="post">
                         <fieldset>
                             <!-- Thymeleaf + Spring Security error display -->
-                            <div th:if="${param.error}" class="alert alert-danger">
-                                Invalid username and password.
-                            </div>
-
-                            <div th:if="${param.logout}" class="alert alert-success">
-                                You have been logged out.
+                            <div th:if="${param.error}" th:text="#{error.email.password.incorrect}" class="alert alert-danger">
+                            </div><div th:if="${param.logout}" th:text="#{error.logout}" class="alert alert-success">
                             </div>
 
                             <!-- Login Controls -->
@@ -44,11 +40,9 @@
                                        placeholder="Password">
                             </div>
 
-
-
                             <!-- Login Button -->
                             <div class="form-actions" style="margin-top: 12px;">
-                                <button type="submit" class="btn btn-success">Log in</button>
+                                <button type="submit" class="btn btn-primary" th:text="#{menu.button.signIn}"></button>
                             </div>
                         </fieldset>
                     </form>

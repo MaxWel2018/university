@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Entity(name = "userEntity")
@@ -28,12 +29,30 @@ public class UserEntity {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "active")
+    private Integer active;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_speciality")
     private SpecialityEntity specialityEntity;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_role")
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    private UserEntity(Builder builder) {
+        setExamResults(builder.examResults);
+        setId(builder.id);
+        setEmail(builder.email);
+        setPassword(builder.password);
+        setFirstName(builder.firstName);
+        setLastName(builder.lastName);
+        setActive(builder.active);
+        setSpecialityEntity(builder.specialityEntity);
+        setRoles(builder.roles);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -50,12 +69,77 @@ public class UserEntity {
                 Objects.equals(password, that.password) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
+                Objects.equals(active, that.active) &&
                 Objects.equals(specialityEntity, that.specialityEntity) &&
-                Objects.equals(role, that.role);
+                Objects.equals(roles, that.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examResults, id, email, password, firstName, lastName, specialityEntity, role);
+        return Objects.hash(examResults, id, email, password, firstName, lastName, active, specialityEntity, roles);
+    }
+
+    public static final class Builder {
+        private List<ExamResultEntity> examResults;
+        private Integer id;
+        private String email;
+        private String password;
+        private String firstName;
+        private String lastName;
+        private Integer active;
+        private SpecialityEntity specialityEntity;
+        private Set<Role> roles;
+
+        private Builder() {
+        }
+
+        public Builder withExamResults(List<ExamResultEntity> val) {
+            examResults = val;
+            return this;
+        }
+
+        public Builder withId(Integer val) {
+            id = val;
+            return this;
+        }
+
+        public Builder withEmail(String val) {
+            email = val;
+            return this;
+        }
+
+        public Builder withPassword(String val) {
+            password = val;
+            return this;
+        }
+
+        public Builder withFirstName(String val) {
+            firstName = val;
+            return this;
+        }
+
+        public Builder withLastName(String val) {
+            lastName = val;
+            return this;
+        }
+
+        public Builder withActive(Integer val) {
+            active = val;
+            return this;
+        }
+
+        public Builder withSpecialityEntity(SpecialityEntity val) {
+            specialityEntity = val;
+            return this;
+        }
+
+        public Builder withRoles(Set<Role> val) {
+            roles = val;
+            return this;
+        }
+
+        public UserEntity build() {
+            return new UserEntity(this);
+        }
     }
 }

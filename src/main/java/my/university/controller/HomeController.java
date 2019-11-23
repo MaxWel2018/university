@@ -1,16 +1,17 @@
 package my.university.controller;
 
+import my.university.model.domain.LoginForm;
 import my.university.model.domain.Speciality;
 import my.university.model.domain.User;
 import my.university.model.service.SpecialityService;
+import my.university.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -18,10 +19,12 @@ import java.util.List;
 public class HomeController {
     private static final String DEFAULT_VALUE_NUMBER_SPECIALITY = "1";
     private final SpecialityService specialityService;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(SpecialityService specialityService) {
+    public HomeController(SpecialityService specialityService, UserService userService) {
         this.specialityService = specialityService;
+        this.userService = userService;
     }
 
 
@@ -34,22 +37,43 @@ public class HomeController {
         return "home";
     }
 
-    @RequestMapping(value = {"/login"},method = RequestMethod.GET)
-    public String getLoginForm(@ModelAttribute(name = "user") User user,Model model) {
+
+    @RequestMapping(value = {"/error"}, method = RequestMethod.GET)
+    public String error() {
+        return "/error/error404";
+    }
+
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+    public String getLoginForm(@ModelAttribute(name = "loginForm") LoginForm loginForm) {
         return "login";
     }
 
-    @RequestMapping(value = {"/login"},method = RequestMethod.POST)
-    public String login(@ModelAttribute(name = "user") User user,Model model) {
-        @NotEmpty(message = "Please provide a password")
-        @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}")
-        String userPassword = user.getPassword();
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    public String getSingUpForm(@ModelAttribute(name = "user") User user) {
+        return "sing-up";
+    }
 
-        @Email(message = "*Please provide a valid Email")
-        @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}")
-        @NotEmpty(message = "Please provide an email")
-        String email = user.getEmail();
+    @PostMapping(value = {"/register"})
+    public String register(@ModelAttribute(name = "user") @Valid User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "sing-up";
+        }
+
+        userService.registration(user);
+
+        user.setPassword("");
+        model.addAttribute("loginForm", user);
 
         return "login";
+    }
+
+    @PostMapping(value = {"/login"})
+    public String login(Model model, @Valid LoginForm loginForm, BindingResult bindingResult) {
+        System.out.println("Working controller /login  Post");
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+        model.addAttribute("user", loginForm.getEmail());
+        return "home";
     }
 }

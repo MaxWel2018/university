@@ -41,7 +41,7 @@
                 </li>
                 <form style="
     position: absolute;
-    top: 16px;
+    top: 13px;
     left: 925px;
 "   class="form-inline my-2 my-lg-0">
                     <select style="width: 70px;" class=" form-control select-size" id="lang" name="lang" onchange="submit()">
@@ -52,11 +52,17 @@
                     </select>
                 </form>
 
-                <li class="nav-item" style="margin-left: 40%;">
-                    <div class="menu-menu nav-link" sec:authorize="isFullyAuthenticated()">
-                        <a class=" btn btn-primary" th:text="#{menu.button.signIn}" href="/login"></a>
-                        <a class=" btn btn-primary" th:text="#{menu.button.registration}" href="/register"></a>
-                        <a class=" btn btn-primary" th:text="#{menu.button.logOut}" href="/logout"></a>
+                <li  class="nav-item" style="margin-left: 40%;display: flex;justify-content: space-around;width: 318px;">
+                    <div style="display:flex;width: 54%;justify-content: space-around;">
+                        <form sec:authorize="isAnonymous()" th:action="@{/login}" method="get">
+                            <input type="submit" class=" btn btn-primary" th:value="#{menu.button.signIn}"/>
+                        </form>
+                        <form sec:authorize="isAnonymous()"  th:action="@{/register}" method="get">
+                            <input type="submit" class=" btn btn-primary" th:value="#{menu.button.registration}"/>
+                        </form>
+                        <form style="margin-left: auto;" sec:authorize="isFullyAuthenticated()" th:action="@{/logout}" method="post">
+                            <input type="submit" class=" btn btn-primary" th:value="#{menu.button.logOut}"/>
+                        </form>
                     </div>
                 </li>
 

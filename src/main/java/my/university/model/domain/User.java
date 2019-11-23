@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -32,17 +33,19 @@ public class User {
     @NotEmpty(message = "Please provide your surname")
     private String lastName;
     private Speciality speciality;
-    private Role role;
+    private Integer active;
+    private Set<Role> roles;
 
     private User(Builder builder) {
+        setExamResults(builder.examResults);
         setId(builder.id);
         setEmail(builder.email);
         setPassword(builder.password);
         setFirstName(builder.firstName);
         setLastName(builder.lastName);
         setSpeciality(builder.speciality);
-        setExamResults(builder.examResults);
-        setRole(builder.role);
+        setActive(builder.active);
+        setRoles(builder.roles);
     }
 
     public static Builder newBuilder() {
@@ -51,16 +54,22 @@ public class User {
 
 
     public static final class Builder {
+        private List<ExamResult> examResults;
         private Integer id;
         private @Email(message = "*Please provide a valid Email") @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}") @NotEmpty(message = "Please provide an email") String email;
         private @NotEmpty(message = "Please provide a password") @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}") String password;
         private @NotEmpty(message = "Please provide your name") @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}") String firstName;
         private @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}") @NotEmpty(message = "Please provide your surname") String lastName;
         private Speciality speciality;
-        private List<ExamResult> examResults;
-        private Role role;
+        private Integer active;
+        private Set<Role> roles;
 
         private Builder() {
+        }
+
+        public Builder withExamResults(List<ExamResult> val) {
+            examResults = val;
+            return this;
         }
 
         public Builder withId(Integer val) {
@@ -93,13 +102,13 @@ public class User {
             return this;
         }
 
-        public Builder withExamResults(List<ExamResult> val) {
-            examResults = val;
+        public Builder withActive(Integer val) {
+            active = val;
             return this;
         }
 
-        public Builder withRole(Role val) {
-            role = val;
+        public Builder withRoles(Set<Role> val) {
+            roles = val;
             return this;
         }
 

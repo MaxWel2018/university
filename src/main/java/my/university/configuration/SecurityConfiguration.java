@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String rolesQuery;
 
     @Autowired
-    public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DataSource dataSource) {
+    public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DataSource dataSource  ) {
         this.passwordEncoder = passwordEncoder;
         this.dataSource = dataSource;
     }
@@ -46,29 +46,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.
-                authorizeRequests()
+        http
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/home").permitAll()
-                .antMatchers("/registration").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/home")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/home",true)
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .and().logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .and().logout().permitAll();
+
     }
 
     @Override
     public void configure(WebSecurity web)  {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/img/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**");
     }
 
 }

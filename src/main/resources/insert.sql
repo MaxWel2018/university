@@ -5,6 +5,10 @@ values ('Math'),
        ('OOP'),
        ('Java Programing');
 
+INSERT INTO role(role)
+values ('USER'),('ADMIN');
+
+
 INSERT INTO specialities(description, exam_end, exams_start, speciality_name, students_number)
 values ( 'How do you find the most efficient and fair network topology?
 How do you make computers reason about logic?
