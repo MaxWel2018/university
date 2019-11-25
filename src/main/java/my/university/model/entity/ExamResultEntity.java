@@ -24,11 +24,10 @@ public class ExamResultEntity {
     @Column(name = "grade")
     private Integer grade;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_course")
     private CourseEntity course;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private UserEntity user;
 

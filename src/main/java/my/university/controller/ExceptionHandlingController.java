@@ -26,4 +26,9 @@ public class ExceptionHandlingController {
 
         return "error/for-other";
     }
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NumberFormatException.class)
+    public String error() {
+        return "error/for-other";
+    }
 }

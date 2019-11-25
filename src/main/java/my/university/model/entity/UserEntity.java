@@ -14,9 +14,7 @@ import java.util.Set;
 @Table(name = "users")
 public class UserEntity {
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    List<ExamResultEntity> examResults;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -34,12 +32,11 @@ public class UserEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_speciality")
     private SpecialityEntity specialityEntity;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     private UserEntity(Builder builder) {
-        setExamResults(builder.examResults);
         setId(builder.id);
         setEmail(builder.email);
         setPassword(builder.password);
@@ -63,7 +60,7 @@ public class UserEntity {
             return false;
         }
         UserEntity that = (UserEntity) o;
-        return Objects.equals(examResults, that.examResults) &&
+        return
                 Objects.equals(id, that.id) &&
                 Objects.equals(email, that.email) &&
                 Objects.equals(password, that.password) &&
@@ -76,11 +73,10 @@ public class UserEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(examResults, id, email, password, firstName, lastName, active, specialityEntity, roles);
+        return Objects.hash( id, email, password, firstName, lastName, active, specialityEntity, roles);
     }
 
     public static final class Builder {
-        private List<ExamResultEntity> examResults;
         private Integer id;
         private String email;
         private String password;
@@ -93,10 +89,7 @@ public class UserEntity {
         private Builder() {
         }
 
-        public Builder withExamResults(List<ExamResultEntity> val) {
-            examResults = val;
-            return this;
-        }
+
 
         public Builder withId(Integer val) {
             id = val;

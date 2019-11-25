@@ -20,7 +20,6 @@ public class User {
 
     private Integer id;
     @Value("${spring.queries.roles-query}")
-    private String string;
     @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}" , message = "enter the email in the specified format : name@domain.com")
     private String email;
     @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}", message = "Password inCorrect")

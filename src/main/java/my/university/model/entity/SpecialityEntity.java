@@ -33,7 +33,7 @@ public class SpecialityEntity {
     @Column(name = "exam_end")
     private LocalDate examsEnd;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "speciality_courses",
             joinColumns = @JoinColumn(name = "id_speciality"),

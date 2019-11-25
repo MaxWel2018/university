@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CourseMapperImpl implements CourseMapper {
     @Override
     public Course mapEntityToDomain(CourseEntity courseEntity) {
-        return Course.builder().courseName(courseEntity.getCourseName())
+        return Course.builder().id(courseEntity.getId()).courseName(courseEntity.getCourseName())
                 .build();
     }
 

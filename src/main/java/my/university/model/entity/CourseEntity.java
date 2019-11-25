@@ -18,7 +18,7 @@ public class CourseEntity {
     private Integer id;
     @Column(name = "course_name", nullable = false)
     private String courseName;
-    @OneToOne(mappedBy = "course")
+    @OneToOne(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private ExamResultEntity examResult;
     @ManyToMany(mappedBy = "requiredCourses",fetch = FetchType.EAGER)
     private List<SpecialityEntity> specialities;

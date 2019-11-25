@@ -15,11 +15,11 @@ public class UserResultEntity {
     @Column(name = "user_results_id")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "speciality_id")
     private SpecialityEntity specialityEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     private UserEntity userEntity;
 

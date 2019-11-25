@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Course</title>
+    <title>Ok</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
     <style>
 
 
@@ -139,45 +138,15 @@
         }
 
     </style>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <p style="
-    font-size: 32px;
-    text-align: center;
-" th:text="#{home.content.date.exam.choose}"></p>
-        <p style="
-    font-size: 22px;
-    text-align: center;
-    color: brown;
-" th:text="${speciality.name}"></p>
-        <form method="get" action="courses-submit">
-            <input type="hidden" name="speciality" th:value="${speciality.id}">
-            <table style="
-        margin: 0 auto;
-    background: #0c5460;
-    padding: 20px;
-    display: block;
-    width: 38%;
-    color: snow;
-">
-                <tr th:each="sp:${speciality.getRequiredCourses()}">
-                    <td style="padding-right:10px;padding-bottom: 10px; " th:text="${sp.courseName}"></td>
-                    <td style="padding-bottom: 10px;">
-                        <input class="btn btn-outline" th:name="${sp.id}" th:max="${speciality.examsEnd}" th:min="${speciality.examsStart}"
-                               type="date">
-                    </td>
-                </tr>
-            </table>
-            <input style="
-    position: absolute;
-    left: 768px;
-    top: 392px;
-    width: 20%;
-" type="submit" class="btn-primary btn">
-        </form>
+
+      <p class="alert alert-success" th:text="#{course.register.success}"></p>
+
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>

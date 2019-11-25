@@ -9,4 +9,6 @@ public interface SpecialityService {
     List<Speciality> findAll();
 
     Speciality findById(Integer id);
+
+    Long count();
 }

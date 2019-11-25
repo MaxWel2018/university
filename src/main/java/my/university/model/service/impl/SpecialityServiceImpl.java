@@ -37,4 +37,9 @@ public class SpecialityServiceImpl implements SpecialityService {
                 .orElseThrow(() -> new EntityNotFoundException("Speciality with " + id + " not found")));
     }
 
+    @Override
+    public Long count() {
+       return specialityRepository.count();
+    }
+
 }

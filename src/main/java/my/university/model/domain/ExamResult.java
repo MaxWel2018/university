@@ -20,9 +20,9 @@ public class ExamResult {
 
     private Integer grade;
 
-    private CourseEntity course;
+    private Course course;
 
-    private UserEntity user;
+    private User user;
 
     private ExamResult(Builder builder) {
         setId(builder.id);
@@ -41,8 +41,8 @@ public class ExamResult {
         private Integer id;
         private LocalDate date;
         private Integer grade;
-        private CourseEntity course;
-        private UserEntity user;
+        private Course course;
+        private User user;
 
         private Builder() {
         }
@@ -62,12 +62,12 @@ public class ExamResult {
             return this;
         }
 
-        public Builder withCourse(CourseEntity val) {
+        public Builder withCourse(Course val) {
             course = val;
             return this;
         }
 
-        public Builder withUser(UserEntity val) {
+        public Builder withUser(User val) {
             user = val;
             return this;
         }

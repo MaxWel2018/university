@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        Objects.requireNonNull(email);
+        Objects.requireNonNull(email,"email empty");
         return userMapper.mapEntityToDomain(userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with Email: [" + email + "] not found")));
     }
