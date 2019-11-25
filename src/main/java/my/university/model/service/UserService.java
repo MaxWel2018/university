@@ -1,6 +1,7 @@
 package my.university.model.service;
 
 import my.university.model.domain.User;
+import my.university.model.domain.UserResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +13,12 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    User login(String email, String password);
 
     User findById(Integer id);
 
     void update(User entity);
 
     List<User> findAll();
+
+    UserResult findFinalResultByUserId(Integer id);
 }

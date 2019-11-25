@@ -52,7 +52,7 @@
 " th:text="#{home.content.description}"></p>
             <p  th:text="${specSelected.description}"></p>
         </div>
-        <form  th:action="@{/home/course-register}" >
+        <form  th:action="@{/user/course-register}" >
             <input type="hidden" name="speciality" th:value="${specSelected.id}">
             <input type="submit" class=" btn btn-primary" th:value="#{reg.regestration}"/>
         </form>

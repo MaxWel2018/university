@@ -2,20 +2,20 @@ package my.university.model.service.impl;
 
 import lombok.NoArgsConstructor;
 import my.university.model.domain.User;
+import my.university.model.domain.UserResult;
 import my.university.model.entity.Role;
-import my.university.model.exception.AuthorisationFailException;
 import my.university.model.exception.EntityAlreadyExistException;
 import my.university.model.exception.EntityNotFoundException;
 import my.university.model.mapper.UserMapper;
+import my.university.model.mapper.UserResultMapper;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
+import my.university.model.repository.UserResultRepository;
 import my.university.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,18 +24,24 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
+    private UserResultRepository userResultRepository;
+
     private RoleRepository roleRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
 
     private UserMapper userMapper;
 
+    private UserResultMapper userResultMapper;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserResultRepository userResultRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, UserResultMapper userResultMapper) {
         this.userRepository = userRepository;
+        this.userResultRepository = userResultRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.userResultMapper = userResultMapper;
     }
 
     @Override
@@ -44,10 +50,8 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistException("A user with this Email is already registered");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleRepository.findByRole("USER");
         user.setActive(1);
-
-        user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
+        checkRoles(user);
         userRepository.save(userMapper.mapDomainToEntity(user));
 
         return user;
@@ -55,27 +59,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        Objects.requireNonNull(email,"email empty");
-        return userMapper.mapEntityToDomain(userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User with Email: [" + email + "] not found")));
+        return Optional.ofNullable(email)
+                .map(Objects::requireNonNull)
+                .map(userRepository::findByEmail)
+                .get()
+                .map(userMapper::mapEntityToDomain)
+                .orElseThrow(() -> new EntityNotFoundException("User with Email: [" + email + "] not found"));
     }
 
-    @Override
-    public User login(String email, String password) {
-        User user = findByEmail(email);
-        @NotEmpty(message = "Please provide a password") @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}")
-        String userPassword = user.getPassword();
-        if (userPassword.equals(passwordEncoder.encode(password))) {
-            return user;
-        } else {
-            throw new AuthorisationFailException("Email or Password dont correct");
-        }
-    }
 
     @Override
     public User findById(Integer id) {
-        return userMapper.mapEntityToDomain(userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User with id[" + id + "] dont found")));
+        return Optional.ofNullable(id)
+                .map(Objects::requireNonNull)
+                .map(userRepository::findById)
+                .get()
+                .map(userMapper::mapEntityToDomain)
+                .orElseThrow(() -> new EntityNotFoundException("User with id[" + id + "] dont found"));
     }
 
     @Override
@@ -90,5 +90,22 @@ public class UserServiceImpl implements UserService {
                 .findAll().stream()
                 .map(userMapper::mapEntityToDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResult findFinalResultByUserId(Integer id) {
+        return Optional.ofNullable(id)
+                .map(Objects::requireNonNull)
+                .map(userResultRepository::findByUserId)
+                .map(userResultMapper::mapEntityToDomain)
+                .orElse(null);
+
+    }
+
+    private void checkRoles(User user) {
+        if (user.getRoles() == null) {
+            Role role = roleRepository.findByRole("USER");
+            user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
+        }
     }
 }

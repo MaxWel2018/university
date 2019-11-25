@@ -153,7 +153,7 @@
     text-align: center;
     color: brown;
 " th:text="${speciality.name}"></p>
-        <form method="get" action="courses-submit">
+        <form method="get" th:action="@{courses-submit}">
             <input type="hidden" name="speciality" th:value="${speciality.id}">
             <table style="
         margin: 0 auto;

@@ -1,11 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Error</title>
+    <title>Profile</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <style>
 
+        .flex {
+
+            display: flex;
+            font-size: 24px;
+
+        }
 
         * {
             box-sizing: border-box;
@@ -108,6 +114,13 @@
             background-color: #e3ecf5;
         }
 
+        .style-info {
+            padding-left: 20px;
+            color: brown;
+            font-style: italic;
+
+        }
+
         .flex-wrapper {
             display: flex;
             flex-direction: column;
@@ -138,23 +151,87 @@
         }
 
     </style>
-
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
+        <div>
+            <p style="
+    text-align: center;
+    font-size: 40px;
+    color: brown;
+    font-style: italic;
+" th:text="#{profile.information}"></p>
 
-        <div class="starter-template alert alert-warning">
-            <h1 >403 - Access is denied</h1>
-            <div  th:inline="text">Hello '[[${#httpServletRequest.remoteUser}]]',
-                you do not have permission to access this page.</div>
+            <div class="flex">
+                <p style="
+    color: darkslategray;
+" th:text="#{result.user.first.name}"></p> :
+                <p class="style-info" th:text="${user.firstName}"></p>
+
+            </div>
+
+            <div class="flex">
+                <p style="
+    color: darkslategray;
+" th:text="#{result.user.last.name}"></p> :
+                <p class="style-info" th:text="${user.lastName}"></p>
+            </div>
+            <div class="flex">
+                <p style="
+    color: darkslategray;
+" th:text="#{reg.email}"></p> :
+                <p class="style-info" th:text="${user.email}"></p>
+            </div>
+            <div class="flex" th:if="${finalResult!=null}">
+                <p style="
+    color: darkslategray;
+" th:text="#{result.user.confirmed}"></p> :
+                <p class="style-info" th:text="${finalResult.confirmed} ==false?'❌':'✔'"></p>
+            </div>
         </div>
+        <div class="resultExam" th:if="${examResult!=null}">
+
+            <p style="
+    text-align: center;
+    font-size: 40px;
+    padding-top: 10px;
+    color: brown;
+    font-style: italic;
+" th:text="#{home.header.resultExam}"></p>
+
+            <table style="
+font-size: 24px;
+color: darkslategray;
+    width: 75%;
+">
+                <thead>
+                <tr>
+                    <th th:text="#{profile.course.name}"></th>
+                    <th th:text="#{home.content.date.exam}"></th>
+                    <th style="text-align: center; color: brown;" th:text="#{profile.information.grade}"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="result:${examResult}">
+                    <td style="padding-right:10px;padding-bottom: 10px; " th:text="${result.course.courseName}"></td>
+                    <td th:text="${result.date}"></td>
+                    <td style="text-align: center; color: brown;"
+                        th:text="${result.grade}==null?'?':${result.grade}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
 
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
+
 
 </body>
 </html>

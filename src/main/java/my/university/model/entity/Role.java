@@ -22,6 +22,11 @@ public class Role {
         this.role = role;
     }
 
+    public Role(Integer id, String role) {
+        this.id = id;
+        this.role = role;
+    }
+
     public String getRole() {
         return role.toUpperCase();
     }

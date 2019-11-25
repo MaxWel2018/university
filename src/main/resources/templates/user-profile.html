@@ -1,7 +1,10 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
+    <title>Profile</title>
     <div th:replace="fragments/header :: header-style"></div>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+
     <style>
 
 
@@ -136,23 +139,17 @@
         }
 
     </style>
-
 </head>
 <body>
-
-<div th:replace="fragments/header :: header"></div>
-
-<div class="container">
-
-    <div class="starter-template alert alert-danger">
-        <h1 th:text="#{error.something}"></h1>
-
+<div class="flex-wrapper">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="content">
+        <a th:text="#{profile.information}" class=" btn btn-primary " th:href="@{show-info}"></a>
     </div>
 
+    <div th:replace="fragments/footer :: footer"></div>
 </div>
-<!-- /.container -->
 
-<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>
