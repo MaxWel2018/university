@@ -2,6 +2,7 @@ package my.university.model.service.impl;
 
 import my.university.model.domain.ExamResult;
 import my.university.model.entity.ExamResultEntity;
+import my.university.model.exception.DataBaseRuntimeException;
 import my.university.model.mapper.ExamResultMapper;
 import my.university.model.repository.ExamResultRepository;
 import my.university.model.service.ExamResultService;
@@ -30,7 +31,10 @@ public class ExamResultServiceImpl implements ExamResultService {
 
     @Override
     public ExamResultEntity save(ExamResult examResult) {
-      return   examResultRepository.save(examResultMapper.mapDomainToEntity(examResult));
+        return Optional.ofNullable(examResult)
+                .map(examResultMapper::mapDomainToEntity)
+                .map(examResultRepository::save)
+                .orElseThrow(() -> new DataBaseRuntimeException("Exam Result  does not save"));
     }
 
     @Override
