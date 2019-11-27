@@ -15,20 +15,11 @@ public class ExceptionHandlingController {
         return "error/for-other"    ;
     }
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(Exception.class)
-    public String notFoundError() {
-        return "error/error404";
-    }
 
     @ExceptionHandler({SQLException.class, DataAccessException.class})
     public String databaseError() {
 
         return "error/for-other";
     }
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public String error() {
-        return "error/for-other";
-    }
+
 }
