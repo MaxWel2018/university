@@ -10,16 +10,16 @@ import java.sql.SQLException;
 
 @ControllerAdvice
 public class ExceptionHandlingController {
-    @ExceptionHandler(Exception.class)
-    public String excepting() {
-        return "error/for-other"    ;
-    }
-
 
     @ExceptionHandler({SQLException.class, DataAccessException.class})
     public String databaseError() {
 
-        return "error/for-other";
+        return "for-other";
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public String excepting() {
+        return "for-other"    ;
     }
 
 }

@@ -181,12 +181,14 @@
                 <th>Date</th>
                 <th>Name</th>
                 <th>Last Name</th>
+                <th>Grade </th>
             </tr>
             <tr th:each=" exRes:${page.content}">
                 <th th:text="${exRes.id}"></th>
                 <th th:text="${exRes.date}"></th>
                 <th th:text="${exRes.user.firstName}"></th>
                 <th th:text="${exRes.user.lastName}"></th>
+                <th ><input type="text" th:name="${exRes.id}" th:value="${exRes.grade}"></th>
             </tr>
         </table>
 

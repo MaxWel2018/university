@@ -42,19 +42,19 @@ public class AdminController {
 
     @GetMapping(value = {"set-grades"})
     public String info(Model model, @PageableDefault(size = DEFAULT_SIZE_PAGE) Pageable pageable,
-                       @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
+                       @RequestParam( name ="specialityOption" ,defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
                        @RequestParam(name = "examDate",defaultValue = DEFAULT_DATE) String date) {
         addAttributes(model,courseOption,pageable ,date);
         return "admin-set-grades";
     }
 
-    private void addAttributes(Model model, @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
+    private void addAttributes(Model model, @RequestParam(name ="specialityOption",defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
                                @PageableDefault(size = DEFAULT_SIZE_PAGE) Pageable pageable,
-                               @RequestParam(name = "examDate", defaultValue = DEFAULT_DATE) String date) {
+                               @RequestParam(name = "examDate", defaultValue = DEFAULT_DATE) String examDate) {
         model.addAttribute("courseSelectedId", courseOption);
         model.addAttribute("allCourse", courseService.findAll());
-        model.addAttribute("selectedDate", date);
-        Page<ExamResult> page = examResultService.findByCourseIdAndDate(courseOption, LocalDate.parse(date), pageable);
+        model.addAttribute("selectedDate", examDate);
+        Page<ExamResult> page = examResultService.findByCourseIdAndDate(courseOption, LocalDate.parse(examDate), pageable);
         model.addAttribute("page", page);
 
     }
