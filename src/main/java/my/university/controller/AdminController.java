@@ -48,6 +48,16 @@ public class AdminController {
         return "admin-set-grades";
     }
 
+    @GetMapping(value = {"apply-grade"})
+    public String applyGrade(@RequestParam(name = "idUser") Integer idUser,
+                             @RequestParam(name = "grade") Integer grade,
+                             @RequestParam(name = "idCourse") Integer idCourse) {
+
+
+
+        return "admin-set-grades";
+    }
+
     private void addAttributes(Model model, @RequestParam(name ="specialityOption",defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
                                @PageableDefault(size = DEFAULT_SIZE_PAGE) Pageable pageable,
                                @RequestParam(name = "examDate", defaultValue = DEFAULT_DATE) String examDate) {

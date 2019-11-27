@@ -175,23 +175,23 @@
                 <input class="btn-primary btn" style="width: 100%;" th:value="#{home.exam.submit}" type="submit">
             </label>
         </form>
+        <form th:action="@{set-grades}">
         <table class="table table-striped">
             <tr>
-                <th>Id</th>
                 <th>Date</th>
                 <th>Name</th>
                 <th>Last Name</th>
                 <th>Grade </th>
             </tr>
-            <tr th:each=" exRes:${page.content}">
-                <th th:text="${exRes.id}"></th>
+            <tr th:each="exRes:${page.content}">
                 <th th:text="${exRes.date}"></th>
                 <th th:text="${exRes.user.firstName}"></th>
                 <th th:text="${exRes.user.lastName}"></th>
                 <th ><input type="text" th:name="${exRes.id}" th:value="${exRes.grade}"></th>
             </tr>
         </table>
-
+            <input type="button" class="btn-primary btn" th:value="#{home.exam.submit}">
+        </form>
         <div class="pagination-div">
     <span th:if="${page.hasPrevious()}">
         <a th:href="@{set-grades(page=${page.number -1},size=${page.size})}">Previous</a>

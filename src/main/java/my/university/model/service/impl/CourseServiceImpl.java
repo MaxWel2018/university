@@ -1,7 +1,6 @@
 package my.university.model.service.impl;
 
 import my.university.model.domain.Course;
-import my.university.model.exception.EntityNotFoundException;
 import my.university.model.mapper.CourseMapper;
 import my.university.model.repository.CourseRepository;
 import my.university.model.service.CourseService;
@@ -29,13 +28,6 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll().stream()
                 .map(courseMapper::mapEntityToDomain)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Course findById(Integer id) {
-        return courseRepository.findById(id)
-                .map(courseMapper::mapEntityToDomain)
-                .orElseThrow(()->new EntityNotFoundException("User with id [" + id + "] not found."));
     }
 
 }

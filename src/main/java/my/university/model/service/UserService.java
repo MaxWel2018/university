@@ -13,12 +13,10 @@ public interface UserService {
 
     User findByEmail(String email);
 
-
     User findById(Integer id);
 
     void update(User entity);
 
-    List<User> findAll();
 
     UserResult findFinalResultByUserId(Integer id);
 }

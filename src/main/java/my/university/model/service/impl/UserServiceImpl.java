@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @NoArgsConstructor
@@ -82,14 +84,6 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         findById(user.getId());
         registration(user);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userRepository
-                .findAll().stream()
-                .map(userMapper::mapEntityToDomain)
-                .collect(Collectors.toList());
     }
 
     @Override
