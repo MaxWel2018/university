@@ -20,7 +20,4 @@ public class Course {
     @NotNull
     private String courseName;
 
-    private ExamResult examResult;
-
-    private List<Speciality> specialities;
 }

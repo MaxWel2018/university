@@ -50,7 +50,6 @@ public class HomeController {
 
         user.setPassword("");  // clean password
         model.addAttribute("loginForm", user);
-
         return "login";
     }
 

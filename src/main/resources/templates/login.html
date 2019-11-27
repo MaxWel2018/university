@@ -20,7 +20,7 @@
                     <i th:text="#{menu.button.signIn}" class="fa fa-user"></i>
                 </div>
                 <div class="card-block" style="padding: 24px;">
-                    <form name="f" th:action="@{/login}" th:object="${loginForm}" method="post">
+                    <form name="f" th:action="@{/login}" th:object="${loginForm}" method="POST">
                         <fieldset>
                             <!-- Thymeleaf + Spring Security error display -->
                             <div th:if="${param.error}" th:text="#{error.email.password.incorrect}" class="alert alert-danger">

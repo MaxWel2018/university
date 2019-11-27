@@ -6,7 +6,6 @@ import my.university.model.entity.UserEntity;
 import my.university.model.mapper.UserMapper;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
-import my.university.model.service.UserService;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;

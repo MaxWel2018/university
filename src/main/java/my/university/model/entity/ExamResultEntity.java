@@ -24,7 +24,7 @@ public class ExamResultEntity {
     @Column(name = "grade")
     private Integer grade;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_course")
     private CourseEntity course;
     @ManyToOne(fetch = FetchType.LAZY)

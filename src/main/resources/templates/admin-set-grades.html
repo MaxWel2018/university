@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Profile</title>
+    <title>Home</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
     <style>
 
 
@@ -139,12 +138,72 @@
         }
 
     </style>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <a th:text="#{admin.profile.set.grades}" class=" btn btn-primary " th:href="@{show-info}"></a>
+        <p style="
+    text-align: center;
+    font-size: 40px;
+    color: brown;
+    font-style: italic;
+" th:text="#{profile.set.grades.header}"></p>
+        <form style="width: 100%;" method="get" th:action="@{set-grades}">
+            <select name="specialityOption" class="selectpicker form-control" data-style="btn-primary"
+                    title="Choose one of the following..."
+                    style="width: 30%; margin: 20px auto;">
+                <option th:each="cours:${allCourse}" th:selected="${courseSelectedId==cours.id}"
+                        th:text="${cours.courseName}" th:value="${cours.id}">
+                </option>
+            </select>
+            <label style="
+    display: block;
+    margin:  0 auto;
+    width: 30%;
+">
+                <input style="width: 100%;" class="btn btn-outline" name="examDate" th:value="${selectedDate}" required
+                       type="date">
+            </label>
+            <label style="
+    display: block;
+    margin:  0 auto;
+    width: 30%;
+    padding-top: 10px;
+">
+                <input class="btn-primary btn" style="width: 100%;" th:value="#{home.exam.submit}" type="submit">
+            </label>
+        </form>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Last Name</th>
+            </tr>
+            <tr th:each=" exRes:${page.content}">
+                <th th:text="${exRes.id}"></th>
+                <th th:text="${exRes.date}"></th>
+                <th th:text="${exRes.user.firstName}"></th>
+                <th th:text="${exRes.user.lastName}"></th>
+            </tr>
+        </table>
+
+        <div class="pagination-div">
+    <span th:if="${page.hasPrevious()}">
+        <a th:href="@{/employees(page=${page.number -1},size=${page.size})}">Previous</a>
+    </span>
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+             <a th:href="@{/employees(page=${i},size=${page.size})}">[[${i}+1]]</a>
+        </span>
+            </th:block>
+            <span th:if="${page.hasNext()}">
+        <a th:href="@{/employees(page=${page.number+1},size=${page.size})}">Next</a>
+    </span>
+        </div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
