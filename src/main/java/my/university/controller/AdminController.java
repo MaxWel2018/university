@@ -53,8 +53,6 @@ public class AdminController {
                              @RequestParam(name = "grade") Integer grade,
                              @RequestParam(name = "idCourse") Integer idCourse) {
 
-
-
         return "admin-set-grades";
     }
 
