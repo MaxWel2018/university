@@ -118,18 +118,5 @@ public class SpecialityEntity {
         }
     }
 
-    @Override
-    public String toString() {
-        return "SpecialityEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", studentsNumber=" + studentsNumber +
-                ", description='" + description + '\'' +
-                ", examsStart=" + examsStart +
-                ", examsEnd=" + examsEnd +
-                ", requiredCourses=" + requiredCourses +
-                ", userResultEntities=" + userResultEntities +
-                '}';
-    }
-    //TODO Защита от зацикливания MapStruct
+
 }

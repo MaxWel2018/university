@@ -27,30 +27,11 @@ public class ExamResultEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_course")
     private CourseEntity course;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private UserEntity user;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ExamResultEntity)) {
-            return false;
-        }
-        ExamResultEntity that = (ExamResultEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(grade, that.grade) &&
-                Objects.equals(course, that.course) &&
-                Objects.equals(user, that.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, date, grade, course, user);
-    }
 
     private ExamResultEntity(Builder builder) {
         setId(builder.id);

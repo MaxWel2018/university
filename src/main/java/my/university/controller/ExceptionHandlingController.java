@@ -11,12 +11,12 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler({SQLException.class, DataAccessException.class})
     public String databaseError() {
-        return "for-other";
+        return "error/for-other";
     }
 
     @ExceptionHandler(Throwable.class)
     public String excepting() {
-        return "for-other";
+        return "error/for-other";
     }
 
 }

@@ -51,31 +51,6 @@ public class UserEntity {
         return new Builder();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof UserEntity)) {
-            return false;
-        }
-        UserEntity that = (UserEntity) o;
-        return
-                Objects.equals(id, that.id) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(active, that.active) &&
-                Objects.equals(specialityEntity, that.specialityEntity) &&
-                Objects.equals(roles, that.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( id, email, password, firstName, lastName, active, specialityEntity, roles);
-    }
-
     public static final class Builder {
         private Integer id;
         private String email;
