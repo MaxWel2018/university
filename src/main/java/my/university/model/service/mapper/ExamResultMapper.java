@@ -1,4 +1,4 @@
-package my.university.model.mapper;
+package my.university.model.service.mapper;
 
 import my.university.model.domain.ExamResult;
 import my.university.model.entity.ExamResultEntity;

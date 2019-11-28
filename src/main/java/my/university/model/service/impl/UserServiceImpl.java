@@ -1,13 +1,14 @@
 package my.university.model.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import my.university.model.domain.User;
 import my.university.model.domain.UserResult;
 import my.university.model.entity.Role;
 import my.university.model.exception.EntityAlreadyExistException;
 import my.university.model.exception.EntityNotFoundException;
-import my.university.model.mapper.UserMapper;
-import my.university.model.mapper.UserResultMapper;
+import my.university.model.service.mapper.UserMapper;
+import my.university.model.service.mapper.UserResultMapper;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
 import my.university.model.repository.UserResultRepository;
@@ -17,15 +18,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @NoArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-    public static final int ACTIVE = 1;
+    private static final int ACTIVE = 1;
+
     private  UserRepository userRepository;
 
     private UserResultRepository userResultRepository;
@@ -37,16 +39,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     private UserResultMapper userResultMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserResultRepository userResultRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, UserResultMapper userResultMapper) {
-        this.userRepository = userRepository;
-        this.userResultRepository = userResultRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userMapper = userMapper;
-        this.userResultMapper = userResultMapper;
-    }
 
     @Override
     public User registration(User user) {
@@ -71,7 +63,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with Email: [" + email + "] not found"));
     }
 
-
     @Override
     public User findById(Integer id) {
         return Optional.ofNullable(id)
@@ -93,6 +84,7 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(id)
                 .map(Objects::requireNonNull)
                 .map(userResultRepository::findByUserId)
+                .orElseThrow(()-> new EntityNotFoundException("Result Not Found"))
                 .map(userResultMapper::mapEntityToDomain)
                 .orElse(null);
 

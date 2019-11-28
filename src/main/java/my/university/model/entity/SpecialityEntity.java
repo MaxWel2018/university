@@ -59,7 +59,6 @@ public class SpecialityEntity {
         return new Builder();
     }
 
-
     public static final class Builder {
         private Integer id;
         private String name;
@@ -117,6 +116,5 @@ public class SpecialityEntity {
             return new SpecialityEntity(this);
         }
     }
-
 
 }

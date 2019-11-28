@@ -1,0 +1,208 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <title>Result</title>
+    <div th:replace="fragments/header :: header-style"></div>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <style>
+
+        .flex {
+
+            display: flex;
+            font-size: 24px;
+
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        !important;
+            color: white;
+        }
+
+        a:hover {
+            text-decoration: none;
+        !important;
+        }
+
+        .hidden {
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 0;
+
+        }
+
+        .flex-header {
+            display: flex;
+            justify-content: space-between;
+            align-content: center;
+            padding: 9px;
+        }
+
+        #background, #activity, #employments {
+            padding-left: 40px;
+        }
+
+        .speciality-courses {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 231px;
+            right: 200px;
+            border-radius: 23px;
+            background: #00000047;
+            padding: 20px;
+            color: rgb(0, 123, 255);
+            font-size: 18px;
+            width: 400px;
+            font-weight: bold;
+        }
+
+        .speciality-courses-label {
+
+            position: absolute;
+            top: 249px;
+            right: 200px;
+            border-radius: 23px;
+            padding: 20px;
+            color: #ec0000;
+            font-size: 24px;
+            width: 400px;
+            font-weight: bold;
+            z-index: 99;
+        }
+
+        .spec-item > label {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            min-height: 800px;
+        }
+
+        .flex-header > a {
+            color: white;
+        }
+
+        .flex-header > a:hover {
+            border-bottom: 1px solid #58c5f0;
+            text-decoration: none;
+        !important;
+            color: #004eff;
+        !important;
+        }
+
+        header {
+            background: rgb(54, 66, 121);
+        }
+
+        html {
+            background: #0c5460;
+            width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        body {
+            background-color: #e3ecf5;
+        }
+
+        .style-info {
+            padding-left: 20px;
+            color: brown;
+            font-style: italic;
+
+        }
+
+        .flex-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100VH;
+            margin: 0 auto;
+            width: 1000px;
+        }
+
+        html {
+            background: #0c5460;
+            width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .btn-primary {
+            background-color: #0c5460;
+            border-color: #0c5460;
+        !important;
+
+        }
+
+
+        footer {
+            text-align: center;
+            height: 50px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="flex-wrapper">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="content">
+
+        <form style="width: 100%;" method="get" th:action="@{result}">
+            <select name="specialityOption" class="selectpicker form-control" data-style="btn-primary"
+                    title="Choose one of the following..."
+                    style="width: 30%; margin: 20px auto;" onchange="submit()">
+                <option th:each="spec:${specialities}" th:selected="${specSelectedId==spec.id}"
+                        th:text="${spec.name}" th:value="${spec.id}">
+                </option>
+            </select>
+        </form>
+        <form th:action="@{result}">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Speciality</th>
+                <th>Grade </th>
+                <th>Confirmed</th>
+            </tr>
+            <tr th:each="exRes:${page.content}">
+                <th th:text="${exRes.user.firstName}"></th>
+                <th th:text="${exRes.user.lastName}"></th>
+                <th th:text="${exRes.speciality.name}"></th>
+                <th th:text="${exRes.finalMark}"></th>
+                <th th:text="${exRes.confirmed}"></th>
+            </tr>
+        </table>
+        </form>
+        <div class="pagination-div">
+    <span th:if="${page.hasPrevious()}">
+        <a th:href="@{set-grades(page=${page.number -1},size=${page.size})}">Previous</a>
+    </span>
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+             <a th:href="@{set-grades(page=${i},size=${page.size})}">[[${i}+1]]</a>
+        </span>
+            </th:block>
+            <span th:if="${page.hasNext()}">
+        <a th:href="@{set-grades(page=${page.number+1},size=${page.size})}">Next</a>
+    </span>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+
+
+</body>
+</html>

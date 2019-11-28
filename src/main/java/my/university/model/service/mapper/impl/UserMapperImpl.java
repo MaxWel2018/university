@@ -1,28 +1,21 @@
-package my.university.model.mapper.impl;
+package my.university.model.service.mapper.impl;
 
+import lombok.AllArgsConstructor;
 import my.university.model.domain.Speciality;
 import my.university.model.domain.User;
 import my.university.model.entity.SpecialityEntity;
 import my.university.model.entity.UserEntity;
-import my.university.model.mapper.ExamResultMapper;
-import my.university.model.mapper.SpecialityMapper;
-import my.university.model.mapper.UserMapper;
+import my.university.model.service.mapper.SpecialityMapper;
+import my.university.model.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class UserMapperImpl implements UserMapper {
 
     private final SpecialityMapper specialityMapper;
-    private final ExamResultMapper examResultMapper;
-
-    @Autowired
-    public UserMapperImpl(SpecialityMapper specialityMapper, ExamResultMapper examResultMapper) {
-        this.specialityMapper = specialityMapper;
-        this.examResultMapper = examResultMapper;
-    }
 
     @Override
     public UserEntity mapDomainToEntity(User user) {
@@ -59,19 +52,15 @@ public class UserMapperImpl implements UserMapper {
                 .build();
     }
 
-
     private Speciality getSpeciality(UserEntity userEntity) {
-
         return Optional.ofNullable(userEntity.getSpecialityEntity())
                 .map(specialityMapper::mapEntityToDomain)
                 .orElse(null);
     }
 
     private SpecialityEntity getSpecialityEntity(User user) {
-
         return Optional.ofNullable(user.getSpeciality())
                 .map(specialityMapper::mapDomainToEntity)
                 .orElse(null);
     }
-
 }

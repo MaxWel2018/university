@@ -1,5 +1,6 @@
 package my.university.controller;
 
+import lombok.AllArgsConstructor;
 import my.university.model.domain.ExamResult;
 import my.university.model.service.CourseService;
 import my.university.model.service.ExamResultService;
@@ -16,21 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 
 @Controller
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping(value = {"/admin"})
-
 public class AdminController {
+
     private static final int DEFAULT_SIZE_PAGE = 11;
     private static final String DEFAULT_VALUE_NUMBER_COURSE = "1";
     private static final String DEFAULT_DATE = "2019-11-30";
     private final ExamResultService examResultService;
     private final CourseService courseService;
-
-    @Autowired
-    public AdminController(ExamResultService examResultService, CourseService courseService) {
-        this.examResultService = examResultService;
-        this.courseService = courseService;
-    }
-
 
     @GetMapping(value = {"/", "profile", ""})
     public String showAdminProfile() {
@@ -52,10 +47,7 @@ public class AdminController {
 
         return "admin-set-grades";
     }
-//TODO выпилить  анотации
-    private void addAttributes(Model model, @RequestParam(name ="specialityOption",defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
-                               @PageableDefault(size = DEFAULT_SIZE_PAGE) Pageable pageable,
-                               @RequestParam(name = "examDate", defaultValue = DEFAULT_DATE) String examDate) {
+private void addAttributes(Model model, Integer courseOption, Pageable pageable, String examDate) {
         model.addAttribute("courseSelectedId", courseOption);
         model.addAttribute("allCourse", courseService.findAll());
         model.addAttribute("selectedDate", examDate);

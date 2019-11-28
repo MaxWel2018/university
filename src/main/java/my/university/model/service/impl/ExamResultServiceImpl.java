@@ -1,9 +1,9 @@
 package my.university.model.service.impl;
 
+import lombok.AllArgsConstructor;
 import my.university.model.domain.ExamResult;
 import my.university.model.entity.ExamResultEntity;
-import my.university.model.exception.DataBaseRuntimeException;
-import my.university.model.mapper.ExamResultMapper;
+import my.university.model.service.mapper.ExamResultMapper;
 import my.university.model.repository.ExamResultRepository;
 import my.university.model.service.ExamResultService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +16,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class ExamResultServiceImpl implements ExamResultService {
     private final ExamResultRepository examResultRepository;
 
     private final ExamResultMapper examResultMapper;
 
-
-    @Autowired
-    public ExamResultServiceImpl(ExamResultRepository examResultRepository, ExamResultMapper examResultMapper) {
-        this.examResultRepository = examResultRepository;
-        this.examResultMapper = examResultMapper;
-    }
-
     @Override
     public ExamResultEntity save(ExamResult examResult) {
         return Optional.ofNullable(examResult)
                 .map(examResultMapper::mapDomainToEntity)
                 .map(examResultRepository::save)
-                .orElseThrow(() -> new DataBaseRuntimeException("Exam Result  does not save")); // убрать тип
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Override

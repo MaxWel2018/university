@@ -11,13 +11,16 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 @Builder
 public class Course {
 
-    private Integer id;
+    private  Integer id;
 
     @NotNull
-    private String courseName;
+    private  String courseName;
 
+    public Course(@NotNull String courseName) {
+        this.courseName = courseName;
+    }
 }

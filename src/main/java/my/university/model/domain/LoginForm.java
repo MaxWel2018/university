@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class LoginForm {
+
     @Email(message = "*Please provide a valid Email")
     @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}")
     @NotEmpty(message = "Please provide an email")

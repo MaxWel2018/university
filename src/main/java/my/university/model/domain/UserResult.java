@@ -1,11 +1,10 @@
 package my.university.model.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import my.university.model.entity.SpecialityEntity;
 import my.university.model.entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @NoArgsConstructor
@@ -13,9 +12,9 @@ public class UserResult {
 
     private Integer id;
 
-    private SpecialityEntity specialityEntity;
+    private Speciality speciality;
 
-    private UserEntity userEntity;
+    private  User user;
 
     private Integer finalMark;
 
@@ -23,8 +22,8 @@ public class UserResult {
 
     private UserResult(Builder builder) {
         setId(builder.id);
-        setSpecialityEntity(builder.specialityEntity);
-        setUserEntity(builder.userEntity);
+        setSpeciality(builder.speciality);
+        setUser(builder.user);
         setFinalMark(builder.finalMark);
         setConfirmed(builder.confirmed);
     }
@@ -36,8 +35,8 @@ public class UserResult {
 
     public static final class Builder {
         private Integer id;
-        private SpecialityEntity specialityEntity;
-        private UserEntity userEntity;
+        private Speciality speciality;
+        private User user;
         private Integer finalMark;
         private Boolean confirmed;
 
@@ -49,13 +48,13 @@ public class UserResult {
             return this;
         }
 
-        public Builder withSpecialityEntity(SpecialityEntity val) {
-            specialityEntity = val;
+        public Builder withSpeciality(Speciality val) {
+            speciality = val;
             return this;
         }
 
-        public Builder withUserEntity(UserEntity val) {
-            userEntity = val;
+        public Builder withUser(User val) {
+            user = val;
             return this;
         }
 

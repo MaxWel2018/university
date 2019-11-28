@@ -1,5 +1,6 @@
 package my.university.controller;
 
+import lombok.AllArgsConstructor;
 import my.university.model.domain.LoginForm;
 import my.university.model.domain.User;
 import my.university.model.service.SpecialityService;
@@ -13,17 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping(value = {"/home", "/"})
 public class HomeController {
+
     private static final String DEFAULT_VALUE_NUMBER_SPECIALITY = "1";
     private SpecialityService specialityService;
     private UserService userService;
-
-    @Autowired
-    public HomeController(SpecialityService specialityService, UserService userService) {
-        this.specialityService = specialityService;
-        this.userService = userService;
-    }
 
     @GetMapping(value = {"/", "home"})
     public String getMessage(Model model, @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_SPECIALITY) Integer specialityOption) {
@@ -39,7 +36,6 @@ public class HomeController {
     }
 
 
-
     @PostMapping(value = {"/register"})
     public String register(@ModelAttribute(name = "user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -48,7 +44,7 @@ public class HomeController {
 
         userService.registration(user);
 
-        user.setPassword(null);  // clean password
+        user.setPassword(null);
         model.addAttribute("loginForm", user);
         return "login";
     }
@@ -71,5 +67,7 @@ public class HomeController {
     public String getLoginForm(@ModelAttribute(name = "loginForm") LoginForm loginForm) {
         return "login";
     }
+
+
 
 }

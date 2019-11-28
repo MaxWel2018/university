@@ -3,7 +3,7 @@ package my.university.model.service.impl;
 import my.university.model.domain.User;
 import my.university.model.entity.Role;
 import my.university.model.entity.UserEntity;
-import my.university.model.mapper.UserMapper;
+import my.university.model.service.mapper.UserMapper;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
 import org.junit.After;
@@ -18,9 +18,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -37,37 +38,20 @@ public class UserServiceImplTest {
     private UserMapper userMapper;
     @InjectMocks
     private UserServiceImpl userServiceUnderTest;
-    private UserEntity userEntity = UserEntity.newBuilder()
-            .withId(1)
-            .withFirstName("Gustavo")
-            .withLastName("Ponce")
-            .withEmail("test@test.com")
-            .build();
-    private User user = User.newBuilder()
-            .withId(1)
-            .withFirstName("Gustavo")
-            .withLastName("Ponce")
-            .withEmail("test@test.com")
-            .build();
-    Set<Role> roles = new HashSet<>();
+    private UserEntity userEntity = getUserEntity();
+
+    private User user = getUser();
+
+    private Set<Role> roles = new HashSet<>();
     {
         roles.add(new Role("USER"));
     }
-    private User userAfterRegistration = User.newBuilder()
-            .withId(1)
-            .withFirstName("Gustavo")
-            .withLastName("Ponce")
-            .withEmail("test@test.com")
-            .withActive(1)
-            .withRoles(roles)
-            .build();
+    private User userAfterRegistration = getUserAfterRegistration();
+
     @After
     public void resetMock() {
         reset(mockUserRepository, mockRoleRepository,userMapper, mockBCryptPasswordEncoder);
     }
-
-
-
 
     @Test
     public void shouldReturnUserByEmail() {
@@ -78,7 +62,18 @@ public class UserServiceImplTest {
 
         final User result = userServiceUnderTest.findByEmail(email);
 
-        assertEquals(email, result.getEmail());
+        assertThat(email, is(equalTo(result.getEmail())));
+    }
+
+    @Test
+    public void shouldReturnUserById() {
+        when(mockUserRepository.findById(anyInt())).thenReturn(Optional.ofNullable(userEntity));
+        when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(user);
+        when(mockBCryptPasswordEncoder.encode(any(String.class))).thenReturn(userEntity.getPassword());
+
+        final User result = userServiceUnderTest.findById(user.getId());
+
+        assertThat(user.getId(), is(equalTo(result.getId())));
     }
 
     @Test
@@ -87,9 +82,37 @@ public class UserServiceImplTest {
         when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(user);
         when(mockBCryptPasswordEncoder.encode(any(String.class))).thenReturn(userEntity.getPassword());
 
-
         User result = userServiceUnderTest.registration(user);
 
-        assertEquals(userAfterRegistration, result);
+        assertThat(userAfterRegistration, is(equalTo(result)));
+    }
+
+    private static UserEntity getUserEntity() {
+        return UserEntity.newBuilder()
+                .withId(1)
+                .withFirstName("Gustavo")
+                .withLastName("Ponce")
+                .withEmail("test@test.com")
+                .build();
+    }
+
+    private static User getUser() {
+        return User.newBuilder()
+                .withId(1)
+                .withFirstName("Gustavo")
+                .withLastName("Ponce")
+                .withEmail("test@test.com")
+                .build();
+    }
+
+    private User getUserAfterRegistration() {
+        return User.newBuilder()
+                .withId(1)
+                .withFirstName("Gustavo")
+                .withLastName("Ponce")
+                .withEmail("test@test.com")
+                .withActive(1)
+                .withRoles(roles)
+                .build();
     }
 }

@@ -22,4 +22,5 @@ public class CourseEntity {
     public CourseEntity(String courseName) {
         this.courseName = courseName;
     }
+
 }
