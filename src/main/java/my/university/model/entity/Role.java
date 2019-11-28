@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -22,29 +21,10 @@ public class Role {
         this.role = role;
     }
 
-    public Role(Integer id, String role) {
-        this.id = id;
-        this.role = role;
-    }
+
 
     public String getRole() {
         return role.toUpperCase();
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Role)) {
-            return false;
-        }
-        Role role1 = (Role) o;
-        return Objects.equals(role, role1.role);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(role);
     }
 }

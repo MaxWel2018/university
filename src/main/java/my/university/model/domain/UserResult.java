@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserResult {
 
     private Integer id;
+
     private SpecialityEntity specialityEntity;
+
     private UserEntity userEntity;
+
     private Integer finalMark;
+
     private Boolean confirmed;
 
     private UserResult(Builder builder) {

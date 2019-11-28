@@ -15,6 +15,7 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Integer id;
+
     @Column(name = "course_name", nullable = false)
     private String courseName;
 

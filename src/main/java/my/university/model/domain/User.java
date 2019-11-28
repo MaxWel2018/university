@@ -22,16 +22,23 @@ public class User {
     @Value("${spring.queries.roles-query}")
     @Pattern(regexp = "[a-zA-Z0-9]{1,}[@]{1}[a-z]{3,}[.]{1}+[a-z]{2,}" , message = "enter the email in the specified format : name@domain.com")
     private String email;
+
     @Pattern(regexp = "[A-Za-zA-Яа-яёЁ!_#$%^&*()-=+-]{2,32}", message = "Password inCorrect")
     private String password;
+
     @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}", message = "Last name inCorrect")
     private String firstName;
+
     @Pattern(regexp = "[A-Za-zА-Яа-яёЁ]{2,200}", message = "Last name inCorrect")
     private String lastName;
+
     private Speciality speciality;
+
     private Integer active;
+
     private Set<Role> roles;
-    List<ExamResult> examResults;
+
+    private List<ExamResult> examResults;
 
     private User(Builder builder) {
         setExamResults(builder.examResults);

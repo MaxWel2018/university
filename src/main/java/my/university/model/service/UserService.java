@@ -4,8 +4,6 @@ import my.university.model.domain.User;
 import my.university.model.domain.UserResult;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface UserService {
 
@@ -16,7 +14,6 @@ public interface UserService {
     User findById(Integer id);
 
     void update(User entity);
-
 
     UserResult findFinalResultByUserId(Integer id);
 }

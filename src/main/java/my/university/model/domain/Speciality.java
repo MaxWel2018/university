@@ -96,19 +96,5 @@ public class Speciality {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Speciality{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", studentsNumber=" + studentsNumber +
-                ", description='" + description + '\'' +
-                ", examsStart=" + examsStart +
-                ", examsEnd=" + examsEnd +
-                ", requiredCourses=" + requiredCourses +
-                ", userResult=" + userResult +
-                '}';
-    }
-
 
 }

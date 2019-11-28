@@ -16,5 +16,4 @@ public interface ExamResultService {
 
     Page<ExamResult> findByCourseIdAndDate(Integer id, LocalDate date, Pageable pageable);
 
-
 }

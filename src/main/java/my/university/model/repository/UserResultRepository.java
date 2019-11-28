@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 public interface UserResultRepository extends JpaRepository<UserResultEntity, Integer> {
     @Query(value = "SELECT  * From user_results where  id_user =?1", nativeQuery = true)
-    UserResultEntity findByUserId(Integer id);
+    UserResultEntity findByUserId(Integer id); // TODO: опшинал
 }

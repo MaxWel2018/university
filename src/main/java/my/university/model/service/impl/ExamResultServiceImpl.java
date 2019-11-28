@@ -34,7 +34,7 @@ public class ExamResultServiceImpl implements ExamResultService {
         return Optional.ofNullable(examResult)
                 .map(examResultMapper::mapDomainToEntity)
                 .map(examResultRepository::save)
-                .orElseThrow(() -> new DataBaseRuntimeException("Exam Result  does not save"));
+                .orElseThrow(() -> new DataBaseRuntimeException("Exam Result  does not save")); // убрать тип
     }
 
     @Override

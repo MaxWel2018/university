@@ -24,7 +24,9 @@ import java.util.Optional;
 @Service
 @NoArgsConstructor
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
+
+    public static final int ACTIVE = 1;
+    private  UserRepository userRepository;
 
     private UserResultRepository userResultRepository;
 
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistException("A user with this Email is already registered");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(1);
+        user.setActive(ACTIVE);
         checkRoles(user);
         userRepository.save(userMapper.mapDomainToEntity(user));
 
@@ -99,7 +101,7 @@ public class UserServiceImpl implements UserService {
     private void checkRoles(User user) {
         if (user.getRoles() == null) {
             Role role = roleRepository.findByRole("USER");
-            user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
+            user.setRoles(Collections.singleton(role));
         }
     }
 }

@@ -48,7 +48,7 @@ public class HomeController {
 
         userService.registration(user);
 
-        user.setPassword("");  // clean password
+        user.setPassword(null);  // clean password
         model.addAttribute("loginForm", user);
         return "login";
     }
@@ -71,6 +71,5 @@ public class HomeController {
     public String getLoginForm(@ModelAttribute(name = "loginForm") LoginForm loginForm) {
         return "login";
     }
-
 
 }

@@ -19,14 +19,11 @@ import java.time.LocalDate;
 @RequestMapping(value = {"/admin"})
 
 public class AdminController {
-    public static final int DEFAULT_SIZE_PAGE = 11;
+    private static final int DEFAULT_SIZE_PAGE = 11;
     private static final String DEFAULT_VALUE_NUMBER_COURSE = "1";
-    public static final String DEFAULT_DATE = "2019-11-30";
+    private static final String DEFAULT_DATE = "2019-11-30";
     private final ExamResultService examResultService;
-
     private final CourseService courseService;
-
-
 
     @Autowired
     public AdminController(ExamResultService examResultService, CourseService courseService) {
@@ -55,7 +52,7 @@ public class AdminController {
 
         return "admin-set-grades";
     }
-
+//TODO выпилить  анотации
     private void addAttributes(Model model, @RequestParam(name ="specialityOption",defaultValue = DEFAULT_VALUE_NUMBER_COURSE) Integer courseOption,
                                @PageableDefault(size = DEFAULT_SIZE_PAGE) Pageable pageable,
                                @RequestParam(name = "examDate", defaultValue = DEFAULT_DATE) String examDate) {
@@ -66,6 +63,4 @@ public class AdminController {
         model.addAttribute("page", page);
 
     }
-
-
 }

@@ -27,8 +27,6 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserEntity mapDomainToEntity(User user) {
         return user == null ? null : mapUserEntityToUser(user);
-
-
     }
 
     private UserEntity mapUserEntityToUser(User user) {
