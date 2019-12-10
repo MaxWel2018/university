@@ -1,8 +1,11 @@
 package my.university.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import my.university.model.domain.LoginForm;
 import my.university.model.domain.User;
+import my.university.model.exception.EntityAlreadyExistException;
 import my.university.model.service.SpecialityService;
 import my.university.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@Log4j2
 @Controller
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping(value = {"/home", "/"})
@@ -23,18 +26,12 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping(value = {"/", "home"})
-    public String getMessage(Model model, @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_SPECIALITY) Integer specialityOption) {
+    public String showHomePage(Model model, @RequestParam(defaultValue = DEFAULT_VALUE_NUMBER_SPECIALITY) Integer specialityOption) {
         model.addAttribute("specialities", specialityService.findAll());
         model.addAttribute("specSelectedId", specialityOption);
         model.addAttribute("specSelected", specialityService.findById(specialityOption));
         return "home";
     }
-
-    @GetMapping(value = {"/error"})
-    public String error() {
-        return "/error/error404";
-    }
-
 
     @PostMapping(value = {"/register"})
     public String register(@ModelAttribute(name = "user") @Valid User user, BindingResult bindingResult, Model model) {
@@ -42,7 +39,14 @@ public class HomeController {
             return "sing-up";
         }
 
-        userService.registration(user);
+        try {
+            userService.registration(user);
+            log.info("User {} registered",user);
+        } catch (EntityAlreadyExistException e) {
+            model.addAttribute("entityAlreadyExist", true);
+            return "sing-up";
+
+        }
 
         user.setPassword(null);
         model.addAttribute("loginForm", user);
@@ -61,6 +65,11 @@ public class HomeController {
         }
         model.addAttribute("user", loginForm.getEmail());
         return "home";
+    }
+
+    @GetMapping(value = {"/error"})
+    public String error() {
+        return "/error/error404";
     }
 
     @GetMapping(value = {"/login"})

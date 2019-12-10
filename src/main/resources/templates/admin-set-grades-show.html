@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Profile</title>
+    <title>Home</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
     <style>
 
 
@@ -137,21 +136,75 @@
             text-align: center;
             height: 50px;
         }
+        .table-row{
+            cursor:pointer;
+        }
+
 
     </style>
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $(".table-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        });
+
+    </script>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <a th:text="#{admin.profile.set.grades}" class=" btn btn-primary " th:href="@{set-grades}"></a>
-        <a th:text="#{user.profile.update}" class=" btn btn-primary " th:href="@{update-rating}"></a>
-        <a th:text="#{user.profile.enroll}" class=" btn btn-primary " th:href="@{show-enroll-users}"></a>
+        <p style="
+    text-align: center;
+    font-size: 40px;
+    color: brown;
+    font-style: italic;
+" th:text="#{profile.set.grades.header}"></p>
+        <form style="width: 100%;" method="get" th:action="@{set-grades}">
+            <select name="specialityOption" class="selectpicker form-control" data-style="btn-primary"
+                    title="Choose one of the following..."
+                    style="width: 30%; margin: 20px auto;" onchange="submit()">
+                <option th:each="spec:${allSpeciality}" th:selected="${specSelected==spec.id}"
+                        th:text="${spec.name}" th:value="${spec.id}">
+                </option>
+            </select>
+        </form>
+        <form  method="get" th:action="@{apply-grade}">
+        <table  class='table table-bordered table-condensed table-striped table-hover'  >
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Last Name</th>
+            </tr>
+            <tr  class="table-row"  th:data-href="@{${user.id}}" style="font-weight: normal;" th:each="user:${page.content}" >
+                <th th:text="${user.email}"></th>
+                <th th:text="${user.firstName}"></th>
+                <th th:text="${user.lastName}"></th>
+            </tr>
+        </table>
+            <input type="hidden" name="page" th:value="${page.content}">
+            <input type="submit" class="btn-primary btn" th:value="#{home.exam.submit}">
+        </form>
+        <div class="pagination-div">
+    <span th:if="${page.hasPrevious()}">
+        <a style="color: green" th:href="@{set-grades(page=${page.number -1},size=${page.size},specialityOption=${specSelected})}">Previous</a>
+    </span>
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+             <a style="color:green;" th:href="@{set-grades(page=${i},size=${page.size},specialityOption=${specSelected})}">[[${i}+1]]</a>
+        </span>
+            </th:block>
+            <span th:if="${page.hasNext()}">
+        <a style="color:green;" th:href="@{set-grades(page=${page.number+1},size=${page.size},specialityOption=${specSelected})}">Next</a>
+    </span>
+        </div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 
 </body>
 </html>

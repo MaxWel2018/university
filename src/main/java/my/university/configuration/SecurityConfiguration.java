@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -55,10 +56,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/home",true)
+                .defaultSuccessUrl("/home", true)
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .and().logout().permitAll();
+                .and().logout().permitAll().and()
+                .exceptionHandling().accessDeniedPage("/403");
+
 
     }
 

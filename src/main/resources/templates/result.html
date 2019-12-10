@@ -180,22 +180,23 @@
                 <th th:text="${exRes.user.lastName}"></th>
                 <th th:text="${exRes.speciality.name}"></th>
                 <th th:text="${exRes.finalMark}"></th>
-                <th th:text="${exRes.confirmed}"></th>
+                <th class="style-info" th:text="${exRes.confirmed}==true?'✔':'❌'"></th>
             </tr>
         </table>
         </form>
         <div class="pagination-div">
     <span th:if="${page.hasPrevious()}">
-        <a th:href="@{set-grades(page=${page.number -1},size=${page.size})}">Previous</a>
+        <a style="color: green" th:href="@{result(page=${page.number -1},size=${page.size},specialityOption=${specSelectedId})}">Previous</a>
+
     </span>
             <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
                 <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
                 <span th:unless="${page.number == i}">
-             <a th:href="@{set-grades(page=${i},size=${page.size})}">[[${i}+1]]</a>
+             <a style="color: green" th:href="@{result(page=${i},size=${page.size},specialityOption=${specSelectedId})}">[[${i}+1]]</a>
         </span>
             </th:block>
             <span th:if="${page.hasNext()}">
-        <a th:href="@{set-grades(page=${page.number+1},size=${page.size})}">Next</a>
+        <a style="color: green" th:href="@{result(page=${page.number+1},size=${page.size},specialityOption=${specSelectedId})}">Next</a>
     </span>
         </div>
     </div>

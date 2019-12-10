@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Profile</title>
+    <title>Enroll users</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
     <style>
 
 
@@ -79,7 +78,11 @@
         }
 
         .content {
-            min-height: 800px;
+            min-height: 80VH;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
         }
 
         .flex-header > a {
@@ -138,20 +141,48 @@
             height: 50px;
         }
 
+        .table-row {
+            cursor: pointer;
+        }
+
+
     </style>
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+            $(".table-row").click(function () {
+                window.document.location = $(this).data("href");
+            });
+        });
+
+    </script>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <a th:text="#{admin.profile.set.grades}" class=" btn btn-primary " th:href="@{set-grades}"></a>
-        <a th:text="#{user.profile.update}" class=" btn btn-primary " th:href="@{update-rating}"></a>
-        <a th:text="#{user.profile.enroll}" class=" btn btn-primary " th:href="@{show-enroll-users}"></a>
+
+        <form style="width: 100%;" method="get" th:action="@{enroll-users}">
+            <select name="specialityOption" class="selectpicker form-control" data-style="btn-primary"
+                    title="Choose one of the following..."
+                    style="width: 30%; margin: 20px auto;">
+                <option th:each="spec:${specialities}" th:selected="${specSelectedId==spec.id}"
+                        th:text="${spec.name}" th:value="${spec.id}">
+                </option>
+            </select>
+            <input style="
+    width: 20%;
+    display: block;
+    margin: 0 auto;
+" type="submit" class="btn-primary btn">
+        </form>
+<div style="margin-top: 20px;" th:if="${enrollIsOk==true}">
+    <p class="alert alert-success" th:text="#{enroll.success}"> </p>
+</div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 
 </body>
 </html>

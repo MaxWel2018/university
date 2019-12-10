@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Profile</title>
+    <title>Error</title>
     <div th:replace="fragments/header :: header-style"></div>
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-
+    <link type="text/css" rel="stylesheet" href="../static/css/style.css">
     <style>
 
 
@@ -139,19 +138,21 @@
         }
 
     </style>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <a th:text="#{admin.profile.set.grades}" class=" btn btn-primary " th:href="@{set-grades}"></a>
-        <a th:text="#{user.profile.update}" class=" btn btn-primary " th:href="@{update-rating}"></a>
-        <a th:text="#{user.profile.enroll}" class=" btn btn-primary " th:href="@{show-enroll-users}"></a>
+
+        <div class="starter-template alert alert-warning">
+            <h1 th:text="#{error.data.inccorrect}"></h1>
+        </div>
+
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 
 </body>
 </html>

@@ -47,21 +47,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:text="#{home.header.resultExam}" th:href="@{/user/result}"></a>
                 </li>
-                <form style="
-    position: absolute;
-    top: 13px;
-    left: 925px;
-"   class="form-inline my-2 my-lg-0">
-                    <select style="width: 70px;" class=" form-control select-size" id="lang" name="lang" onchange="submit()">
-                        <option th:selected="${((param.lang != null) and (param.lang[0] == 'en')) or (param.lang == null)}"
-                                value="en" th:text="#{lang.eng}"></option>
-                        <option th:selected="${(param.lang != null) and (param.lang[0] == 'ru')}" value="ru"
-                                th:text="#{lang.ru}"></option>
-                    </select>
-                </form>
 
                 <li  class="nav-item" style="margin-left: 40%;display: flex;justify-content: space-around;width: 318px;">
-                    <div style="display:flex;width: 54%;justify-content: space-around;">
+                    <div style="display:flex;width: 90%;justify-content: space-around;">
                         <form sec:authorize="isAnonymous()" th:action="@{/login}" method="get">
                             <input type="submit" class=" btn btn-outline-primary" th:value="#{menu.button.signIn}"/>
                         </form>
@@ -71,6 +59,16 @@
                         <form style="margin-left: auto;" sec:authorize="isFullyAuthenticated()" th:action="@{/logout}" method="post">
                             <input type="submit" class=" btn btn-primary" th:value="#{menu.button.logOut}"/>
                         </form>
+                        <form>
+                            <select style="width: 70px;" class=" form-control select-size" id="lang" name="lang"
+                                    onchange="submit()">
+                                <option th:selected="${((param.lang != null) and (param.lang[0] == 'en')) or (param.lang == null)}"
+                                        value="en" th:text="#{lang.eng}"></option>
+                                <option th:selected="${(param.lang != null) and (param.lang[0] == 'ru')}" value="ru"
+                                        th:text="#{lang.ru}"></option>
+                            </select>
+                        </form>
+
                     </div>
                 </li>
 

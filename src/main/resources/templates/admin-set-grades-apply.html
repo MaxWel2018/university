@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Profile</title>
+    <title>Home</title>
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
     <style>
 
 
@@ -79,7 +78,11 @@
         }
 
         .content {
-            min-height: 800px;
+            min-height: 80VH;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
         }
 
         .flex-header > a {
@@ -138,20 +141,76 @@
             height: 50px;
         }
 
+        .table-row {
+            cursor: pointer;
+        }
+
+
     </style>
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+            $(".table-row").click(function () {
+                window.document.location = $(this).data("href");
+            });
+        });
+
+    </script>
+
 </head>
 <body>
 <div class="flex-wrapper">
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-        <a th:text="#{admin.profile.set.grades}" class=" btn btn-primary " th:href="@{set-grades}"></a>
-        <a th:text="#{user.profile.update}" class=" btn btn-primary " th:href="@{update-rating}"></a>
-        <a th:text="#{user.profile.enroll}" class=" btn btn-primary " th:href="@{show-enroll-users}"></a>
+        <div>
+
+            <div style="  text-align: center;
+    font-size: 28px;
+    color: brown;
+    font-style: italic;
+    display: flex;
+    width: 54%;
+    margin: 0 auto;
+    justify-content: space-between;" class="">
+                <p th:text="${user.firstName}"></p>
+                <p th:text="${user.lastName}"></p>
+                <p th:text="${user.email}"></p>
+            </div>
+            <form th:object="${form}" method="post" th:action="@{set-grades/apply}" style=" width: 60%;margin: 0 auto;">
+                <table class="table" style="
+    width: 40%;
+    margin: 0 auto;
+    background:  #0c5460;
+    border-radius: 10px;
+    color: white;
+">
+                    <tbody>
+                    <tr th:each="examResult, itemStat :*{examResults}">
+                        <td class="hidden" ><input type="hidden" th:field="*{examResults[__${itemStat.index}__].course.id}"  th:value="${examResult.course.id}"></td>
+                        <td class="hidden" ><input th:field="*{examResults[__${itemStat.index}__].user.id}" th:value="${examResult.user.id}" type="hidden"></td>
+                        <td class="hidden"><input th:field="*{examResults[__${itemStat.index}__].id}" type="hidden"></td>
+                        <td class="hidden"><input th:field="*{examResults[__${itemStat.index}__].date}" th:value="${examResult.date}" type="hidden"></td>
+                        <td th:field="*{examResults[__${itemStat.index}__].course.courseName}"  th:text="${examResult.course.courseName}"></td>
+                        <td  th:text="${examResult.date}"></td>
+                        <td ><input th:field="*{examResults[__${itemStat.index}__].grade}" style="width: 170px;" class="form-control" th:value="${examResult.grade}"></td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+                <input style="
+    display: block;
+    align-content: center;
+    text-align: center;
+    margin: 10px auto;
+    width: 76%;
+" type="submit" class="btn-primary btn" th:value="#{home.exam.submit}">
+            </form>
+        </div>
+
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 
 </body>
 </html>

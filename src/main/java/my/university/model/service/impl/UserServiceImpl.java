@@ -2,18 +2,21 @@ package my.university.model.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import my.university.model.domain.User;
 import my.university.model.domain.UserResult;
 import my.university.model.entity.Role;
 import my.university.model.exception.EntityAlreadyExistException;
 import my.university.model.exception.EntityNotFoundException;
-import my.university.model.service.mapper.UserMapper;
-import my.university.model.service.mapper.UserResultMapper;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
 import my.university.model.repository.UserResultRepository;
 import my.university.model.service.UserService;
+import my.university.model.service.mapper.UserMapper;
+import my.university.model.service.mapper.UserResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @NoArgsConstructor
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registration(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            log.info("A user with " + user.getEmail() + " Email is already registered");
             throw new EntityAlreadyExistException("A user with this Email is already registered");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -76,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         findById(user.getId());
-        registration(user);
+        userRepository.save(userMapper.mapDomainToEntity(user));
     }
 
     @Override
@@ -88,6 +93,11 @@ public class UserServiceImpl implements UserService {
                 .map(userResultMapper::mapEntityToDomain)
                 .orElse(null);
 
+    }
+
+    @Override
+    public Page<User> findBySpeciality(Integer specialityId, Pageable pageable) {
+        return userRepository.findUserBySpecialityId(specialityId, pageable).map(userMapper::mapEntityToDomain);
     }
 
     private void checkRoles(User user) {

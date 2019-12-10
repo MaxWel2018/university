@@ -12,8 +12,11 @@ public interface ExamResultService {
 
     ExamResultEntity save(ExamResult examResult);
 
-    List<ExamResult> findByUser(Integer id);
+    List<ExamResult> findByUserId(Integer id);
 
-    Page<ExamResult> findByCourseIdAndDate(Integer id, LocalDate date, Pageable pageable);
+    ExamResult update(ExamResult examResult);
+
+    List<ExamResult> findAll();
+
 
 }

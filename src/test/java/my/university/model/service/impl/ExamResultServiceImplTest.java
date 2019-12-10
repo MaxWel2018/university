@@ -16,13 +16,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,9 +35,13 @@ public class ExamResultServiceImplTest {
     @InjectMocks
     private ExamResultServiceImpl examResultService;
 
-    private ExamResult examResult = getExamResult();
+    private final ExamResult examResult = getExamResult();
 
-    private ExamResultEntity examResultEntity = getExamResultEntity();
+    private final ExamResultEntity examResultEntity = getExamResultEntity();
+
+    private final List<ExamResult> examResults = Arrays.asList(examResult, examResult, examResult);
+
+    private final List<ExamResultEntity> examResultsEntity = Arrays.asList(examResultEntity, examResultEntity, examResultEntity);
 
     @After
     public void resetMock() {
@@ -51,9 +56,39 @@ public class ExamResultServiceImplTest {
 
         ExamResultEntity examResultEntity = examResultService.save(examResult);
 
-        assertThat(this.examResultEntity, is(equalTo(examResultEntity)));
+        assertThat("Exam result  not save ",this.examResultEntity, is(equalTo(examResultEntity)));
 
     }
+
+    @Test
+    public void shouldReturnListExamResultWhenFinByUserId() {
+        when(examResultRepository.findByUserId(anyInt())).thenReturn(examResultsEntity);
+        when(examResultMapper.mapEntityToDomain(any(ExamResultEntity.class))).thenReturn(examResult);
+
+        List<ExamResult> examResults = examResultService.findByUserId(1);
+
+        verify(examResultMapper, times(3)).mapEntityToDomain(any(ExamResultEntity.class));
+
+        assertThat("Size list not equal  ",this.examResults.size(), is(equalTo(examResults.size())));
+        for (int i = 0; i < examResults.size(); i++) {
+            assertThat("Exam result index" +  i + "  dont equal ",examResults.get(i),
+                    is(equalTo(this.examResults.get(i))));
+        }
+
+    }
+ @Test
+    public void shouldReturnNullWhenParameterFinByUserIdEqualNull() {
+        when(examResultRepository.findByUserId(anyInt())).thenReturn(examResultsEntity);
+        when(examResultMapper.mapEntityToDomain(any(ExamResultEntity.class))).thenReturn(examResult);
+
+        List<ExamResult> examResults = examResultService.findByUserId(null);
+
+        verify(examResultMapper, times(0)).mapEntityToDomain(any(ExamResultEntity.class));
+
+        assertThat("Exam result not null ",examResults, is(nullValue()));
+
+    }
+    
 
     private ExamResult getExamResult() {
         return ExamResult.newBuilder()

@@ -33,7 +33,7 @@ public class SpecialityEntity {
     @Column(name = "exam_end")
     private LocalDate examsEnd;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(
             name = "speciality_courses",
             joinColumns = @JoinColumn(name = "id_speciality"),
@@ -41,7 +41,7 @@ public class SpecialityEntity {
     private List<CourseEntity> requiredCourses;
 
     @OneToMany(mappedBy = "specialityEntity", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, orphanRemoval = true)
+            fetch = FetchType.LAZY)
     private List<UserResultEntity> userResultEntities;
 
     private SpecialityEntity(Builder builder) {

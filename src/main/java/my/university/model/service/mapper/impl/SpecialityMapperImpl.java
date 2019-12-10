@@ -3,13 +3,10 @@ package my.university.model.service.mapper.impl;
 import lombok.AllArgsConstructor;
 import my.university.model.domain.Course;
 import my.university.model.domain.Speciality;
-import my.university.model.domain.UserResult;
 import my.university.model.entity.CourseEntity;
 import my.university.model.entity.SpecialityEntity;
-import my.university.model.entity.UserResultEntity;
 import my.university.model.service.mapper.CourseMapper;
 import my.university.model.service.mapper.SpecialityMapper;
-import my.university.model.service.mapper.UserResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +19,6 @@ public class SpecialityMapperImpl implements SpecialityMapper {
 
     private final CourseMapper courseMapper;
 
-    private final UserResultMapper userResultMapper;
 
     @Override
     public Speciality mapEntityToDomain(SpecialityEntity specialityEntity) {
@@ -38,7 +34,7 @@ public class SpecialityMapperImpl implements SpecialityMapper {
                 .withName(specialityEntity.getName())
                 .withStudentsNumber(specialityEntity.getStudentsNumber())
                 .withRequiredCourses(getReqCourses(specialityEntity))
-                .withUserResult(getUserResult(specialityEntity)).build();
+                .build();
     }
 
     @Override
@@ -53,26 +49,11 @@ public class SpecialityMapperImpl implements SpecialityMapper {
                 .withId(speciality.getId())
                 .withName(speciality.getName())
                 .withStudentsNumber(speciality.getStudentsNumber())
-                .withUserResultEntities(getUserResult(speciality))
                 .withRequiredCourses(getReqCourses(speciality))
                 .build();
 
-
     }
 
-    private List<UserResult> getUserResult(SpecialityEntity specialityEntity) {
-        return specialityEntity.getUserResultEntities()
-                .stream()
-                .map(userResultMapper::mapEntityToDomain)
-                .collect(Collectors.toList());
-    }
-
-    private List<UserResultEntity> getUserResult(Speciality speciality) {
-        return speciality.getUserResult()
-                .stream()
-                .map(userResultMapper::mapDomainToEntity)
-                .collect(Collectors.toList());
-    }
 
     private List<Course> getReqCourses(SpecialityEntity specialityEntity) {
         if (specialityEntity == null) {
@@ -94,4 +75,5 @@ public class SpecialityMapperImpl implements SpecialityMapper {
                 .map(courseMapper::mapDomainToEntity)
                 .collect(Collectors.toList());
     }
+
 }

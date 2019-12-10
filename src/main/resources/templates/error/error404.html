@@ -1,7 +1,23 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-style"></div>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        .btn-primary {
+            background-color: #0c5460;
+            border-color: #0c5460;
+        !important;
+
+        }
+
+
+    </style>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+
     <style>
 
 
@@ -129,7 +145,11 @@
 
         }
 
+        .form-inline {
+            top: 8px;
+            left: 1085px;
 
+        }
         footer {
             text-align: center;
             height: 50px;
@@ -144,14 +164,12 @@
 
 <div class="container">
 
-    <div class="starter-template alert alert-heading">
-        <h1>404 - Page not found</h1>
-        <div th:inline="text">Hello '[[${#httpServletRequest.remoteUser}]]',
-            this page not found.</div>
+    <div class="alert alert-danger">
+        <h1 th:text="#{error.page.not.found}">404 - Page not found</h1>
+
     </div>
 
 </div>
-<!-- /.container -->
 
 <div th:replace="fragments/footer :: footer"></div>
 

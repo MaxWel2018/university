@@ -62,7 +62,7 @@ public class UserServiceImplTest {
 
         final User result = userServiceUnderTest.findByEmail(email);
 
-        assertThat(email, is(equalTo(result.getEmail())));
+        assertThat("User dont found",email, is(equalTo(result.getEmail())));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class UserServiceImplTest {
 
         final User result = userServiceUnderTest.findById(user.getId());
 
-        assertThat(user.getId(), is(equalTo(result.getId())));
+        assertThat("User dont found",user.getId(), is(equalTo(result.getId())));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UserServiceImplTest {
 
         User result = userServiceUnderTest.registration(user);
 
-        assertThat(userAfterRegistration, is(equalTo(result)));
+        assertThat("User not registered",userAfterRegistration, is(equalTo(result)));
     }
 
     private static UserEntity getUserEntity() {

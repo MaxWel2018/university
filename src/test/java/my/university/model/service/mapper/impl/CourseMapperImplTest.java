@@ -15,7 +15,6 @@ public class CourseMapperImplTest {
 
     private static final Course COURSE_WITHOUT_ID = new Course("Math");
 
-
     private static final CourseEntity COURSE_ENTITY = new CourseEntity("Math");
 
     @Test
@@ -28,21 +27,23 @@ public class CourseMapperImplTest {
     public void shouldMapCourseEntityToCourse() {
         Course course = COURSE_MAPPER.mapEntityToDomain(COURSE_ENTITY);
 
-        assertThat(COURSE_WITHOUT_ID, is(equalTo(course)));
+        assertThat(COURSE_WITHOUT_ID.getCourseName(), is(equalTo(course.getCourseName())));
     }
 
     @Test
     public void shouldReturnEmptyObjectWhenParameterNullEntityToDomain() {
         Course course = COURSE_MAPPER.mapEntityToDomain(null);
         Course actual = Course.builder().build();
-        assertThat(actual, is(equalTo(course)));
+        assertThat("Mapping Id failed ",actual.getId(), is(equalTo(course.getId())));
+        assertThat("Mapping name failed ",actual.getCourseName(), is(equalTo(course.getCourseName())));
     }
 
     @Test
     public void shouldReturnEmptyObjectWhenParameterNullDomainToEntity() {
         CourseEntity courseEntity = COURSE_MAPPER.mapDomainToEntity(null);
         CourseEntity actual = new CourseEntity();
-        assertThat(actual, is(equalTo(courseEntity)));
+        assertThat("Mapping Id failed ",actual.getId(), is(equalTo(courseEntity.getId())));
+        assertThat("Mapping name failed ",actual.getCourseName(), is(equalTo(courseEntity.getCourseName())));
 
     }
 

@@ -1,9 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-    <title>Error</title>
+    <title>Ok</title>
     <div th:replace="fragments/header :: header-style"></div>
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/style.css">
     <style>
 
 
@@ -145,16 +145,16 @@
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
 
-        <div class="starter-template alert alert-warning">
-            <h1 >403 - Access is denied</h1>
-            <div  th:inline="text">Hello '[[${#httpServletRequest.remoteUser}]]',
-                you do not have permission to access this page.</div>
-        </div>
+        <p class="alert alert-success" th:text="#{grade.applay.success}"></p>
+        <form action="/admin/set-grades">
+            <input  class="btn-primary btn" type="submit" th:value="#{back.to.list.users}">
 
+        </form>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
 </div>
+
 
 </body>
 </html>

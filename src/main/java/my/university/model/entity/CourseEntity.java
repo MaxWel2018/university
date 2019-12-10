@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +24,22 @@ public class CourseEntity {
         this.courseName = courseName;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CourseEntity)) {
+            return false;
+        }
+        CourseEntity that = (CourseEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(courseName, that.courseName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseName);
+    }
 }

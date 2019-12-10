@@ -5,15 +5,17 @@
     <div th:replace="fragments/header :: header-style"></div>
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <style>
-
     </style>
 
 </head>
 <body>
 <div class="flex-wrapper">
+
+
     <div th:replace="fragments/header :: header"></div>
     <div class="content">
-
+        <p ></p>
+<!--        entityAlreadyExist-->
         <div style="width:600px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
             <div class="card">
                 <div class="card-header">
@@ -81,7 +83,16 @@
             </div>
         </div>
     </div>
+    <script th:inline="javascript" >
+        window.onload = function () {
+            /*<![CDATA[*/
 
+            if([[${entityAlreadyExist==true}]]){
+                    alert([[#{user.exists}]]);
+                }
+            /*]]>*/
+        }
+    </script>
     <div th:replace="fragments/footer :: footer"></div>
 </div>
 
