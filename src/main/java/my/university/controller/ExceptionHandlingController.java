@@ -1,13 +1,8 @@
 package my.university.controller;
 
-import my.university.model.exception.EntityAlreadyExistException;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import java.sql.SQLException;
 
 @ControllerAdvice
 public class ExceptionHandlingController implements ErrorController{
