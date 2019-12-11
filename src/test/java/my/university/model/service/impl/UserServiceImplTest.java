@@ -3,9 +3,11 @@ package my.university.model.service.impl;
 import my.university.model.domain.User;
 import my.university.model.entity.Role;
 import my.university.model.entity.UserEntity;
-import my.university.model.service.mapper.UserMapper;
+import my.university.model.exception.EntityAlreadyExistException;
+import my.university.model.exception.EntityNotFoundException;
 import my.university.model.repository.RoleRepository;
 import my.university.model.repository.UserRepository;
+import my.university.model.service.mapper.UserMapper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import java.util.Set;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
@@ -84,8 +87,69 @@ public class UserServiceImplTest {
 
         User result = userServiceUnderTest.registration(user);
 
-        assertThat("User not registered",userAfterRegistration, is(equalTo(result)));
+        assertThat("registered failed ", userAfterRegistration, is(equalTo(result)));
     }
+
+    @Test
+    public void shouldThrowExceptionIfUserAlreadyRegistered() {
+        when(mockRoleRepository.findByRole(any())).thenReturn(new Role("USER"));
+        when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(user);
+        when(mockBCryptPasswordEncoder.encode(any(String.class))).thenReturn(userEntity.getPassword());
+        when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(userEntity));
+
+        EntityAlreadyExistException exception = assertThrows(
+                EntityAlreadyExistException.class,
+                () -> {
+                    userServiceUnderTest.registration(user);
+                }
+        );
+        assertThat("expected my.university.model.exception.EntityAlreadyExistException to be thrown, but nothing was thrown"
+                , EntityAlreadyExistException.class,
+                is(equalTo(exception.getClass())));
+        assertThat("massages not equal",
+                "A user with this Email is already registered", is(equalTo(exception.getMessage())));
+    }
+
+    @Test
+    public void shouldThrowExceptionIfUserNotFoundByEmail() {
+        when(mockRoleRepository.findByRole(any())).thenReturn(new Role("USER"));
+        when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(user);
+        when(mockBCryptPasswordEncoder.encode(any(String.class))).thenReturn(userEntity.getPassword());
+        when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> {
+                    userServiceUnderTest.findByEmail("HelloWorld@gmail.com");
+                }
+        );
+        assertThat("expected my.university.model.exception.EntityNotFoundException to be thrown, but nothing was thrown"
+                , EntityNotFoundException.class,
+                is(equalTo(exception.getClass())));
+        assertThat("massages not equal",
+                "User with Email: [HelloWorld@gmail.com] not found", is(equalTo(exception.getMessage())));
+    }
+
+    @Test
+    public void shouldThrowExceptionIfUserNotFoundById() {
+        when(mockRoleRepository.findByRole(any())).thenReturn(new Role("USER"));
+        when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(user);
+        when(mockBCryptPasswordEncoder.encode(any(String.class))).thenReturn(userEntity.getPassword());
+        when(mockUserRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> {
+                    userServiceUnderTest.findByEmail("10");
+                }
+        );
+        assertThat("expected my.university.model.exception.EntityNotFoundException to be thrown, but nothing was thrown"
+                , EntityNotFoundException.class,
+                is(equalTo(exception.getClass())));
+        assertThat("massages not equal",
+                "User with Email: [10] not found", is(equalTo(exception.getMessage())));
+    }
+
 
     private static UserEntity getUserEntity() {
         return UserEntity.newBuilder()

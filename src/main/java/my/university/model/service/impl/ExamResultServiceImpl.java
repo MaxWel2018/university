@@ -2,9 +2,11 @@ package my.university.model.service.impl;
 
 import lombok.AllArgsConstructor;
 import my.university.model.domain.ExamResult;
+import my.university.model.domain.User;
 import my.university.model.entity.ExamResultEntity;
 import my.university.model.repository.ExamResultRepository;
 import my.university.model.service.ExamResultService;
+import my.university.model.service.UserService;
 import my.university.model.service.mapper.ExamResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class ExamResultServiceImpl implements ExamResultService {
     private final ExamResultRepository examResultRepository;
+
+    private final UserService userService;
 
     private final ExamResultMapper examResultMapper;
 
@@ -39,8 +43,14 @@ public class ExamResultServiceImpl implements ExamResultService {
     @Override
     public ExamResult update(ExamResult examResult) {
         validateGrade(examResult);
+        addUser(examResult);
         examResultRepository.save(examResultMapper.mapDomainToEntity(examResult));
         return examResult;
+    }
+
+    private void addUser(ExamResult examResult) {
+        User user = userService.findById(examResult.getUser().getId());
+        examResult.setUser(user);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ExamResultEntity {
     @JoinColumn(name = "id_course")
     private CourseEntity course;
 
-    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private UserEntity user;
 

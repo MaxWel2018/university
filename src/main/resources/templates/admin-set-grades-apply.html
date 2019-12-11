@@ -186,12 +186,13 @@
                     <tbody>
                     <tr th:each="examResult, itemStat :*{examResults}">
                         <td class="hidden" ><input type="hidden" th:field="*{examResults[__${itemStat.index}__].course.id}"  th:value="${examResult.course.id}"></td>
+                        <td class="hidden" ><input type="hidden" th:field="*{examResults[__${itemStat.index}__].course.courseName}"  th:value="${examResult.course.courseName}"></td>
                         <td class="hidden" ><input th:field="*{examResults[__${itemStat.index}__].user.id}" th:value="${examResult.user.id}" type="hidden"></td>
                         <td class="hidden"><input th:field="*{examResults[__${itemStat.index}__].id}" type="hidden"></td>
                         <td class="hidden"><input th:field="*{examResults[__${itemStat.index}__].date}" th:value="${examResult.date}" type="hidden"></td>
                         <td th:field="*{examResults[__${itemStat.index}__].course.courseName}"  th:text="${examResult.course.courseName}"></td>
                         <td  th:text="${examResult.date}"></td>
-                        <td ><input th:field="*{examResults[__${itemStat.index}__].grade}" style="width: 170px;" class="form-control" th:value="${examResult.grade}"></td>
+                        <td ><input th:field="*{examResults[__${itemStat.index}__].grade}" style="width: 170px;" type="number" class="form-control" th:value="${examResult.grade}"></td>
 
 
                     </tr>

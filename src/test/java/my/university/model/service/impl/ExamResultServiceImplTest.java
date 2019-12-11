@@ -6,8 +6,8 @@ import my.university.model.domain.User;
 import my.university.model.entity.CourseEntity;
 import my.university.model.entity.ExamResultEntity;
 import my.university.model.entity.UserEntity;
-import my.university.model.service.mapper.ExamResultMapper;
 import my.university.model.repository.ExamResultRepository;
+import my.university.model.service.mapper.ExamResultMapper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -37,6 +38,8 @@ public class ExamResultServiceImplTest {
 
     private final ExamResult examResult = getExamResult();
 
+    private final ExamResult examResultInCorrect = getExamResultInCorrect();
+
     private final ExamResultEntity examResultEntity = getExamResultEntity();
 
     private final List<ExamResult> examResults = Arrays.asList(examResult, examResult, examResult);
@@ -50,6 +53,38 @@ public class ExamResultServiceImplTest {
     }
 
     @Test
+    public void shouldReturnExamResultWhenUpdateExamResult() {
+        when(examResultRepository.save(any(ExamResultEntity.class))).thenReturn(examResultEntity);
+        when(examResultMapper.mapDomainToEntity(any(ExamResult.class))).thenReturn(examResultEntity);
+
+        ExamResult examResultEntity = examResultService.update(examResult);
+
+        assertThat("Exam result  not update ",this.examResult, is(equalTo(examResultEntity)));
+
+    }
+
+
+
+    @Test
+    public void shouldTrowExceptionWhenGradeIncorrect() throws IndexOutOfBoundsException {
+        when(examResultRepository.save(any(ExamResultEntity.class))).thenReturn(examResultEntity);
+        when(examResultMapper.mapDomainToEntity(any(ExamResult.class))).thenReturn(examResultEntity);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    examResultService.update(examResultInCorrect);
+                }
+        );
+
+        assertThat("expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown",
+                IllegalArgumentException.class, is(equalTo(exception.getClass())));
+
+        assertThat("messages not equal",
+                "In correct grade", is(equalTo(exception.getMessage())));
+    }
+
+        @Test
     public void shouldReturnExamResultWhenSaveExamResult() {
         when(examResultRepository.save(any(ExamResultEntity.class))).thenReturn(examResultEntity);
         when(examResultMapper.mapDomainToEntity(any(ExamResult.class))).thenReturn(examResultEntity);
@@ -88,13 +123,23 @@ public class ExamResultServiceImplTest {
         assertThat("Exam result not null ",examResults, is(nullValue()));
 
     }
-    
+
 
     private ExamResult getExamResult() {
         return ExamResult.newBuilder()
                 .withUser(User.newBuilder().withId(1).build())
                 .withDate(LocalDate.parse("2019-12-12"))
                 .withGrade(99)
+                .withId(1)
+                .withCourse(new Course(1, "Math"))
+                .build();
+    }
+
+    private ExamResult getExamResultInCorrect() {
+        return ExamResult.newBuilder()
+                .withUser(User.newBuilder().withId(1).build())
+                .withDate(LocalDate.parse("2019-12-12"))
+                .withGrade(-1)
                 .withId(1)
                 .withCourse(new Course(1, "Math"))
                 .build();

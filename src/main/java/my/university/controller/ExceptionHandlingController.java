@@ -24,8 +24,6 @@ public class ExceptionHandlingController implements ErrorController{
         return "for-other";
     }
 
-
-
     @Override
     public String getErrorPath() {
         return ERROR_PATH;

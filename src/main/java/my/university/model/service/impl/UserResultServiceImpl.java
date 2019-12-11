@@ -69,7 +69,7 @@ public class UserResultServiceImpl implements UserResultService {
             log.info("User result == null");
             throw new IllegalArgumentException("User result == null");
         }
-        Optional<UserResultEntity> userResultFromDataBase = userResultRepository.findByUserId(userResult.getUser().getId());
+        Optional<UserResultEntity> userResultFromDataBase = userResultRepository.findByUserId(getUser(userResult));
         userResultFromDataBase.ifPresent(userResultEntity -> userResult.setId(userResultEntity.getId()));
 
         UserResultEntity userResultEntity = userResultMapper.mapDomainToEntity(userResult);
@@ -90,11 +90,18 @@ public class UserResultServiceImpl implements UserResultService {
         }
         Speciality byId = specialityService.findById(id);
         List<UserResultEntity> bySpecialityId = userResultRepository.findBySpecialityId(id);
+        if (bySpecialityId.size() == 0) {
+            return;
+        }
+        updateUserResult(byId, bySpecialityId);
+
+    }
+
+    private void updateUserResult(Speciality byId, List<UserResultEntity> bySpecialityId) {
         for (int i = 0; i < byId.getStudentsNumber(); i++) {
             bySpecialityId.get(i).setConfirmed(true);
             userResultRepository.save(bySpecialityId.get(i));
         }
-
     }
 
 
@@ -108,6 +115,13 @@ public class UserResultServiceImpl implements UserResultService {
     }
 
     private Integer calculateFinalGrade(List<ExamResult> examResults) {
-        return examResults.stream().map(ExamResult::getGrade).reduce(0, Integer::sum);
+        return examResults.stream().filter(x -> x.getGrade()!=null)
+                .map(ExamResult::getGrade).reduce(0, Integer::sum);
+    }
+
+    private Integer getUser(UserResult userResult) {
+        return Optional.ofNullable(userResult.getUser())
+                .map(User::getId)
+                .orElseThrow(IllegalArgumentException::new);
     }
 }
